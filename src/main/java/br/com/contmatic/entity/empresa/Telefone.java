@@ -5,68 +5,154 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class Telefone {
 	private String numeroTelefone;
-	private int ddd;
-	private String tipo;
+	private String ddd;
+	private String tipoTelefone;
 	private static final int TAMANHO_TELEFONE = 9;
+	private static final int TAMANHO_TIPO_TELEFONE=15;
+	private static final int TAMANHO_DDD=3;
+	private static final int TAMANHO_MIN_TIPO_TELEFONE = 4;
 
-	public String getTelefone() {
+	public String getNumeroTelefone() {
 		return numeroTelefone;
 	}
 
-	public void setTelefone(String telefone) {
-		this.numeroTelefone = telefone;
+	public void setNumeroTelefone(String numeroTelefone) {
+		this.validateTelefoneAll(numeroTelefone);
+		this.numeroTelefone = numeroTelefone;
 	}
 
-	public int getDdd() {
+	public String getDdd() {
 		return ddd;
 	}
 
-	public void setDdd(int ddd) {
+	public void setDdd(String ddd) {
+		this.validateDddAll(ddd);
 		this.ddd = ddd;
 	}
 
-	public String getTipo() {
-		return tipo;
+	public String getTipoTelefone() {
+		return tipoTelefone;
 	}
 
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
+	public void setTipoTelefone(String tipoTelefone) {
+		this.validateTipoTelefoneAll(tipoTelefone);
+		this.tipoTelefone = tipoTelefone;
 	}
 
-	public boolean validateTelefoneNotNull(Telefone tel) {
+	private void validateNumeroTelefoneNotNull(String numeroTelefone) {
 
-		if (tel.getTelefone() == null) {
-			return false;
+		if (numeroTelefone == null) {
+			throw new IllegalArgumentException("O Numero do telefone nao pode ser nulo");
 		}
-		return true;
 
 	}
-
-	public boolean validaTelefoneTamanho(Telefone tel) {
-		if (tel.getTelefone().length() != TAMANHO_TELEFONE) {
-			return false;
+	
+	private void validateNumeroTelefoneTamanho(String numeroTelefone) {
+		if (numeroTelefone.length() != TAMANHO_TELEFONE) {
+			throw new IllegalArgumentException("O Tamanho do telefone esta incorreto");
 		}
-		return true;
 	}
 
-	public boolean validaTelefoneVazio(Telefone tel) {
-		if (tel.getTelefone().isEmpty()) {
-			return false;
+	private void validateNumeroTelefoneVazio(String numeroTelefone) {
+		if (numeroTelefone.isEmpty()) {
+			throw new IllegalArgumentException("O telefone não pode esta vazio");
 		}
-		return true;
 	}
 
-	public boolean validaTelefoneCaracter(Telefone tel) {
-		for (int i = 0; i < tel.getTelefone().length(); i++) {
-			char telchar = tel.getTelefone().charAt(i);
+	private void validaNumeroTelefoneCaracter(String numeroTelefone) {
+		for (int i = 0; i < numeroTelefone.length(); i++) {
+			char telchar = numeroTelefone.charAt(i);
 			if (Character.isLetter(telchar)) {
-				return false;
+				throw new IllegalArgumentException("O telefone não pode conter letras");
 			}
 		}
-		return true;
 
 	}
 
+	private void validateTelefoneAll(String numeroTelefone){
+		this.validateNumeroTelefoneNotNull(numeroTelefone);
+		this.validateNumeroTelefoneVazio(numeroTelefone);
+		this.validaNumeroTelefoneCaracter(numeroTelefone);
+		this.validateNumeroTelefoneTamanho(numeroTelefone);
+	}
+		
+	private void validateDddNotNull(String ddd){
+		if(ddd == null){
+			throw new IllegalArgumentException("DDD não pode ser nulo");
+		}
+	}
+	
+	private void validateDddVazio(String ddd){
+		if (ddd.isEmpty()){
+			throw new IllegalArgumentException("DDD não pode ser vazio");
+		}
+	}
+	
+	private void validateDddTamanho(String ddd){
+		if (ddd.length()!=TAMANHO_DDD){
+			throw new IllegalArgumentException("DDD com tamanho incorreto");
+		}
+	}
+	
+	private void validateDddCaracter(String ddd){
+		for (int i = 0; i < ddd.length(); i++) {
+			char dddchar=ddd.charAt(i);
+			if(Character.isLetter(dddchar)){
+				throw new IllegalArgumentException("DDD não pode conter caracteres");
+			}
+		}
+		
+	}
+	
+	private void validateDddAll(String ddd){
+		this.validateDddNotNull(ddd);
+		this.validateDddVazio(ddd);
+		this.validateDddCaracter(ddd);
+		this.validateDddTamanho(ddd);
+	}
+	
+	private void validateTipoTelefoneNotNull (String tipoTelefone){
+		if(tipoTelefone==null){
+			throw new IllegalArgumentException("Tipo de telefone não pode ser nulo");
+		}
+	}
+	
+	private void validateTipoTelefoneVazio(String tipoTelefone){
+		if(tipoTelefone.isEmpty()){
+			throw new IllegalArgumentException("Tipo de telefone não pode ser vazio");
+		}
+	}
+	
+	private void validateTipoTelefoneTamanhoMaximo(String tipoTelefone){
+		if (tipoTelefone.length()>TAMANHO_TIPO_TELEFONE){
+			throw new IllegalArgumentException("O tamanho do tipo de telefone não pode ser maior que: "+TAMANHO_TIPO_TELEFONE);
+		}
+	}
+	
+	private void validateTipoTelefoneTamanhoMinimo(String tipoTelefone){
+		if(tipoTelefone.length()<TAMANHO_MIN_TIPO_TELEFONE){
+			throw new IllegalArgumentException("O tamanho do tipo de telefone não pode ser menor que: "+TAMANHO_MIN_TIPO_TELEFONE);
+		}
+	}
+	
+	private void validateTipoTelefoneCaracter(String tipoTelefone){
+		for (int i = 0; i < tipoTelefone.length(); i++) {
+			char tipotelchar=tipoTelefone.charAt(i);
+			if(Character.isDigit(tipotelchar)){
+				throw new IllegalArgumentException("O tipo de telefone não pode conter números");
+			}
+		}
+	}
+	
+	private void validateTipoTelefoneAll(String tipoTelefone){
+		this.validateTipoTelefoneNotNull(tipoTelefone);
+		this.validateTipoTelefoneVazio(tipoTelefone);
+		this.validateTipoTelefoneCaracter(tipoTelefone);
+		this.validateTipoTelefoneTamanhoMaximo(tipoTelefone);
+		this.validateTipoTelefoneTamanhoMinimo(tipoTelefone);
+	}
+	
+	
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder().append(this.ddd).append(this.numeroTelefone).toHashCode();
@@ -88,7 +174,7 @@ public class Telefone {
 	@Override
 	public String toString() {
 		return new StringBuilder().append("Telefone: " + this.numeroTelefone).append("DDD: " + this.ddd)
-				.append("Tipo: " + this.tipo).toString();
+				.append("Tipo: " + this.tipoTelefone).toString();
 	}
 
 }
