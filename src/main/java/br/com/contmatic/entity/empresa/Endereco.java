@@ -9,11 +9,11 @@ public class Endereco {
 	private static final int TAMANHO_MIN_NOME_LOGRADOURO = 4;
 	private static final int TAMANHO_MAX_TIPO_LOGRADOURO = 15;
 	private static final int TAMANHO_MIN_TIPO_LOGRADOURO = 2;
-	private static final int TAMANHO_TELEFONE = 9;
 	private static final int TAMANHO_CEP = 8;
 	private static final int TAMANHO_MAX_CIDADE = 30;
 	private static final int TAMANHO_MAX_ESTADO = 15;
 	private static final int TAMANHO_MAX_BAIRRO = 15;
+	private static final int TAMANHO_NUMERO = 15;
 	private String nomeLogradouro;
 	private String tipoLogradouro;
 	private String numero;
@@ -161,8 +161,8 @@ public class Endereco {
 	}
 	
 	private void validateNumeroTamanhoIncorreto(String numero){
-		if(numero.length()!=TAMANHO_TELEFONE){
-			throw new IllegalArgumentException("O tamanho do telefone esta incorreto, o telefone precisa ter: "+TAMANHO_TELEFONE);
+		if(numero.length()>TAMANHO_NUMERO){
+			throw new IllegalArgumentException("O campo numero esta incorreto precisa ter: "+TAMANHO_NUMERO);
 		}
 	}
 	
