@@ -23,7 +23,7 @@ public class EnderecoTeste {
 	
 	@After
 	public void tearDown(){
-		//System.out.println("Depois de cada teste");
+		endereco=null;
 	}
 	@AfterClass
 	public static void tearDownAfterClass() {
@@ -133,7 +133,7 @@ public class EnderecoTeste {
 	
 	@Test (expected=IllegalArgumentException.class)
 	public void nao_deve_aceitar_cep_com_letras(){
-		endereco.setCep("kkkk");
+		endereco.setCep("1234567k");
 	}
 	
 	@Test 
@@ -147,9 +147,16 @@ public class EnderecoTeste {
 	}
 	
 	@Test (expected=IllegalArgumentException.class)
-	public void nao_deve_aceitar_cep_tamanho_incorreto(){
-		endereco.setCep("1425415");
+	public void nao_deve_aceitar_cep_tamanho_maior(){
+		endereco.setCep("123456789");
 	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void nao_deve_aceitar_cep_tamanho_menor(){
+		endereco.setCep("1234567");
+	}
+	
+	
 	
 	@Test
 	public void nao_deve_aceitar_cidade_nulo(){
