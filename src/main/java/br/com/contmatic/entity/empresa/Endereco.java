@@ -13,7 +13,7 @@ public class Endereco {
 	private static final int TAMANHO_MAX_CIDADE = 30;
 	private static final int TAMANHO_MAX_ESTADO = 15;
 	private static final int TAMANHO_MAX_BAIRRO = 15;
-	private static final int TAMANHO_NUMERO = 15;
+	private static final int TAMANHO_NUMERO = 10;
 	private String nomeLogradouro;
 	private String tipoLogradouro;
 	private String numero;

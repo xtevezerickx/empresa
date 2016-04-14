@@ -1,16 +1,34 @@
 package br.com.contmatic.entity.empresa.teste;
 
+import static org.junit.Assert.*;
+import static org.junit.runners.MethodSorters.NAME_ASCENDING;
+
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
 import br.com.contmatic.entity.empresa.Endereco;
 
 @FixMethodOrder(NAME_ASCENDING)
 public class EnderecoTeste {
 	private Endereco endereco;
+	@BeforeClass
+	public static void setUpBeforeClass() {
+		System.out.println("Metodos sendo utilizados antes de iniciar a classe");
+		
+	}
 	
+	@After
+	public void tearDown(){
+		//System.out.println("Depois de cada teste");
+	}
+	@AfterClass
+	public static void tearDownAfterClass() {
+		System.out.println("Metodos executados depois da classe");
+	}
 	@Before
 	public void setUp(){
 		endereco =new Endereco();
@@ -23,132 +41,167 @@ public class EnderecoTeste {
 		endereco.setTipoLogradouro("rua");
 	}
 	
-	@Test
-	public void nao_deve_aceitar_nome_logradouro_nulo(){
-		endereco.setNomeLogradouro(null);
+	@Test (timeout=1000)
+	public void deve_aceitar_nome_logradouro_valido(){
+		endereco.getNomeLogradouro();
+	}
+	
+	@Test(timeout=1000)
+	public void deve_aceitar_tipo_logradouro_valido(){
+		endereco.getTipoLogradouro();
+	}
+	
+	@Test(timeout=1000)
+	public void deve_aceitar_numero_valido(){
+		endereco.getNumero();
+	}
+	
+	@Test(timeout=1000)
+	public void deve_aceitar_cep_valido(){
+		endereco.getCep();
+	}
+	
+	@Test (timeout=1000)
+	public void deve_aceitar_cidade_valido(){
+		endereco.getCidade();
+	}
+	
+	@Test(timeout=1000)
+	public void deve_aceitar_estado_valido(){
+		endereco.getEstado();
+	}
+	
+	@Test (timeout=1000)
+	public void deve_aceitar_bairro_valido(){
+		endereco.getBairro();
 	}
 	
 	@Test
+	public void nao_deve_aceitar_nome_logradouro_nulo(){
+		assertNotNull(endereco.getNomeLogradouro());
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
 	public void nao_deve_aceitar_nome_logradouro_tamanho_maximo(){
 		endereco.setNomeLogradouro("fffffffffffffffffffffffffffffffffffffff");
 	}
 	
-	@Test
+	@Test (expected=IllegalArgumentException.class)
 	public void nao_deve_aceitar_nome_logradouro_tamanho_minimo(){
 		endereco.setNomeLogradouro("d");
 	}
 	
 	@Test
 	public void nao_deve_aceitar_nome_logradouro_vazio(){
-		endereco.setNomeLogradouro("");
+		assertFalse(endereco.getNomeLogradouro().isEmpty());
 	}
 	
 	@Test
 	public void nao_deve_aceitar_tipo_logradouro_nulo(){
-		endereco.setTipoLogradouro(null);
+		assertNotNull(endereco.getTipoLogradouro());
 	}
 	
 	@Test
 	public void nao_deve_aceitar_tipo_logradouro_vazio(){
-		endereco.setTipoLogradouro("");
+		assertFalse(endereco.getTipoLogradouro().isEmpty());
 	}
 	
-	@Test
+	@Test (expected=IllegalArgumentException.class)
 	public void nao_deve_aceitar_tipo_logradouro_tamanho_maximo(){
 		endereco.setTipoLogradouro("lklklllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
 	}
 	
-	@Test
+	@Test (expected=IllegalArgumentException.class)
 	public void nao_deve_aceitar_tipo_logradouro_tamanho_minimo(){
 		endereco.setTipoLogradouro("f");
 	}
 	
 	@Test
 	public void nao_deve_aceitar_numero_nulo(){
-		endereco.setNumero(null);
+		assertNotNull(endereco.getNumero());
 	}
 	
 	@Test
 	public void nao_deve_aceitar_numero_vazio(){
-		endereco.setNumero("");
+		assertFalse(endereco.getNumero().isEmpty());
 	}
 	
-	@Test
+	@Test (expected=IllegalArgumentException.class)
 	public void nao_deve_aceitar_numero_tamanho_incorreto(){
-		endereco.setNumero("1111111111");
+		endereco.setNumero("11111111111");
 	}
 	
-	@Test
+	@Test (expected=IllegalArgumentException.class)
 	public void nao_deve_aceitar_cep_com_letras(){
 		endereco.setCep("kkkk");
 	}
 	
-	@Test
+	@Test 
 	public void nao_deve_aceitar_cep_nulo(){
-		endereco.setCep(null);
+		assertNotNull(endereco.getCep());
 	}
 	
 	@Test
 	public void nao_deve_aceitar_cep_vazio(){
-		endereco.setCep("");
+		assertFalse(endereco.getCep().isEmpty());
 	}
 	
-	@Test
+	@Test (expected=IllegalArgumentException.class)
 	public void nao_deve_aceitar_cep_tamanho_incorreto(){
 		endereco.setCep("1425415");
 	}
 	
 	@Test
 	public void nao_deve_aceitar_cidade_nulo(){
-		endereco.setCidade(null);
+		assertNotNull(endereco.getCidade());
 	}
 	
 	@Test
 	public void nao_deve_aceitar_cidade_vazio(){
-		endereco.setCidade("");
+		assertFalse(endereco.getCidade().isEmpty());
 	}
 	
-	@Test
+	@Test (expected=IllegalArgumentException.class)
 	public void nao_deve_aceitar_cidade_com_numero(){
 		endereco.setCidade("fdf33");
 	}
 	
-	@Test
+	@Test (expected=IllegalArgumentException.class)
 	public void nao_deve_aceitar_cidade_tamanho_incorreto(){
 		endereco.setCidade("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
 	}
 	
 	@Test
 	public void nao_deve_aceitar_estado_nulo(){
-		endereco.setCidade(null);
+		assertNotNull(endereco.getCidade());
 	}
 	
 	@Test
 	public void nao_deve_aceitar_estado_vazio(){
-		endereco.setCidade("");
+		assertFalse(endereco.getCidade().isEmpty());
 	}
 	
-	@Test
+	@Test (expected=IllegalArgumentException.class)
 	public void nao_deve_aceitar_estado_com_numero(){
 		endereco.setCidade("k666");
 	}
 	
-	@Test
+	@Test (expected=IllegalArgumentException.class)
 	public void nao_deve_aceitar_estado_com_tamanho_incorreto(){
 		endereco.setEstado("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
 	}
 	
 	@Test
 	public void nao_deve_aceitar_bairro_nulo(){
-		endereco.setBairro(null);
+		assertNotNull(endereco.getBairro());
 	}
 	
 	@Test
 	public void nao_deve_aceitar_bairro_vazio(){
-		endereco.setBairro("");
+		assertFalse(endereco.getBairro().isEmpty());
 	}
 	
-	@Test
+	@Test (expected=IllegalArgumentException.class)
 	public void nao_deve_aceitar_bairro_tamanho_incorreto(){
 		endereco.setBairro("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
 	}
