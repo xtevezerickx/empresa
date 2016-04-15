@@ -20,7 +20,7 @@ public class Telefone {
 	}
 
 	public void setNumeroTelefone(String numeroTelefone) {
-		this.validateTelefoneAll(numeroTelefone);
+		this.validateNumeroTelefoneAll(numeroTelefone);
 		this.numeroTelefone = numeroTelefone;
 	}
 
@@ -62,7 +62,7 @@ public class Telefone {
 		}
 	}
 
-	private void validaNumeroTelefoneCaracter(String numeroTelefone) {
+	private void validateNumeroTelefoneCaracter(String numeroTelefone) {
 		for (int i = 0; i < numeroTelefone.length(); i++) {
 			char telchar = numeroTelefone.charAt(i);
 			if (Character.isLetter(telchar)) {
@@ -72,10 +72,10 @@ public class Telefone {
 
 	}
 
-	private void validateTelefoneAll(String numeroTelefone){
+	private void validateNumeroTelefoneAll(String numeroTelefone){
 		this.validateNumeroTelefoneNotNull(numeroTelefone);
 		this.validateNumeroTelefoneVazio(numeroTelefone);
-		this.validaNumeroTelefoneCaracter(numeroTelefone);
+		this.validateNumeroTelefoneCaracter(numeroTelefone);
 		this.validateNumeroTelefoneTamanho(numeroTelefone);
 	}
 		

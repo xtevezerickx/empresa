@@ -275,7 +275,7 @@ public class Endereco {
 		this.validateEstadoTamanhoCorreto(estado);
 	}
 	
-	private void validateBairroNulo(String bairro){
+	private void validateBairroNotNull(String bairro){
 		if (bairro==null){
 			throw new IllegalArgumentException("O bairro não pode ser nulo");
 		}
@@ -300,7 +300,7 @@ public class Endereco {
 	}
 	
 	private void validateBairroAll(String bairro){
-		this.validateBairroNulo(bairro);
+		this.validateBairroNotNull(bairro);
 		this.validateBairroVazio(bairro);
 		this.validateBairroTamanhoIncorreto(bairro);
 		this.validateBairroTamanhoMinimo(bairro);
@@ -338,7 +338,7 @@ public class Endereco {
 				.append("CEP: " + this.cep)
 				.append("Cidade" + this.cidade)
 				.append("Estado: " + this.estado)
-				.append("Bairro" + this.bairro)
+				.append("Bairro: " + this.bairro)
 				.build();
 
 	}

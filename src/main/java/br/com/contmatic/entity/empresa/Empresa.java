@@ -109,7 +109,7 @@ public class Empresa {
 		}
 	}
 
-	private void validtaeCNPJTamanho(String cnpj) {
+	private void validateCNPJTamanho(String cnpj) {
 		if (cnpj.length() != TAMANHO_CNPJ) {
 			throw new IllegalArgumentException("Tamanho do CNPJ incorreto");
 		}
@@ -135,7 +135,7 @@ public class Empresa {
 		this.validateCNPJNotNull(cnpj);
 		this.validateCNPJVazio(cnpj);
 		this.validateCNPJContemLetra(cnpj);
-		this.validtaeCNPJTamanho(cnpj);
+		this.validateCNPJTamanho(cnpj);
 
 	}
 
@@ -313,12 +313,12 @@ public class Empresa {
 		SimpleDateFormat dtf = new SimpleDateFormat("dd/MM/yyyy");
 			
 		return new ToStringBuilder(this,MULTI_LINE_STYLE)
-				.append(this.nomeFantasia != null ? "Nome Fantasia " + this.nomeFantasia : null)
+				.append(this.nomeFantasia != null ? "Nome Fantasia: " + this.nomeFantasia : null)
 				.append(this.nomeProprietario != null ? "Nome do Propietário: " + this.nomeProprietario : null)
 				.append(this.cnpj != null ? "CNPJ: " + this.cnpj : null)
-				.append(this.email != null ? "Email:" + this.email : null)
-				.append(this.dataCriacao != null ? "Data de criação" + dtf.format(this.dataCriacao) : null)
-				.append(this.dataAlteracao != null ? "Data da alteração" + dtf.format(this.dataAlteracao) : null)
+				.append(this.email != null ? "Email: " + this.email : null)
+				.append(this.dataCriacao != null ? "Data de criação: " + dtf.format(this.dataCriacao) : null)
+				.append(this.dataAlteracao != null ? "Data da alteração: " + dtf.format(this.dataAlteracao) : null)
 				.append(Arrays.toString(telefone))
 				.append(Arrays.toString(endereco))
 				.build();

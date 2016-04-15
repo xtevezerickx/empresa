@@ -1,6 +1,8 @@
 package br.com.contmatic.entity.empresa.teste;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
 import java.util.Date;
@@ -53,11 +55,16 @@ public class EmpresaTeste {
 	public void setUp() {
 		empresa = new Empresa();
 		endereco = new Endereco[2];
-		telefone = new Telefone[2];
-		enderecoInvalido = new Endereco[2];
-		telefoneInvalido = new Telefone[2]; 
-		
 		endereco[0]= new Endereco();
+		endereco[1]= new Endereco();
+		telefone = new Telefone[2];
+		telefone[0]= new Telefone();
+		telefone[1] = new Telefone();
+		enderecoInvalido = new Endereco[2];
+		enderecoInvalido[1] = new Endereco();
+		telefoneInvalido = new Telefone[2]; 
+		telefoneInvalido[0] = new Telefone();
+		
 		endereco[0].setNomeLogradouro("rua tal tal tal");
 		endereco[0].setCep("03378010");
 		endereco[0].setCidade("Sao paulo");
@@ -65,13 +72,11 @@ public class EmpresaTeste {
 		endereco[0].setTipoLogradouro("rua");
 		endereco[0].setNumero("142");
 		endereco[0].setBairro("bairro x");
-		
-		telefone[0]= new Telefone();
+				
 		telefone[0].setDdd("011");
 		telefone[0].setNumeroTelefone("634570287");
 		telefone[0].setTipoTelefone("celular");
-		
-		endereco[1]= new Endereco();
+				
 		endereco[1].setNomeLogradouro("rua 2");
 		endereco[1].setCep("03378010");
 		endereco[1].setCidade("Poços de Caldas");
@@ -80,14 +85,10 @@ public class EmpresaTeste {
 		endereco[1].setNumero("153");
 		endereco[1].setBairro("bairro Z");
 		
-		telefone[1] = new Telefone();
 		telefone[1].setDdd("035");
 		telefone[1].setNumeroTelefone("123456789");
 		telefone[1].setTipoTelefone("comercial");
-		
-		
-		
-		enderecoInvalido[1] = new Endereco();
+						
 		enderecoInvalido[1].setNomeLogradouro("rua 3");
 		enderecoInvalido[1].setCep("03378015");
 		enderecoInvalido[1].setCidade("Rio de Janeiro");
@@ -96,13 +97,10 @@ public class EmpresaTeste {
 		enderecoInvalido[1].setNumero("1223");
 		enderecoInvalido[1].setBairro("bairro da tijuca");
 		
-		telefoneInvalido[0] = new Telefone();
 		telefoneInvalido[0].setDdd("011");
 		telefoneInvalido[0].setNumeroTelefone("123456889");
 		telefoneInvalido[0].setTipoTelefone("comercial");
-		
-		
-		
+					
 		empresa.setCnpj("11123121111111");
 		empresa.setEmail("ssssssss@sss.com.br");
 		empresa.setEndereco(endereco);
@@ -287,7 +285,7 @@ public class EmpresaTeste {
 		empresa.setTelefone(telefone);
 	}
 	
-	
+//	@Ignore
 	@Test
 	public void teste_to_string(){
 		System.out.println(empresa);
