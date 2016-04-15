@@ -8,7 +8,9 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import br.com.contmatic.entity.empresa.Endereco;
 
@@ -20,6 +22,9 @@ public class EnderecoTeste {
 		System.out.println("Metodos sendo utilizados antes de iniciar a classe");
 		
 	}
+	
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 	
 	@After
 	public void tearDown(){
@@ -174,9 +179,16 @@ public class EnderecoTeste {
 	}
 	
 	@Test (expected=IllegalArgumentException.class)
-	public void nao_deve_aceitar_cidade_tamanho_incorreto(){
+	public void nao_deve_aceitar_cidade_tamanho_maior(){
 		endereco.setCidade("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
 	}
+	
+	@Test
+	public void nao_deve_aceitar_cidade_tamanho_menor(){
+		thrown.expect(IllegalArgumentException.class);
+		endereco.setCidade("oi");
+	}
+	
 	
 	@Test
 	public void nao_deve_aceitar_estado_nulo(){
@@ -190,7 +202,7 @@ public class EnderecoTeste {
 	
 	@Test (expected=IllegalArgumentException.class)
 	public void nao_deve_aceitar_estado_com_numero(){
-		endereco.setCidade("k666");
+		endereco.setCidade("Sao Paulo0");
 	}
 	
 	@Test (expected=IllegalArgumentException.class)
@@ -207,11 +219,19 @@ public class EnderecoTeste {
 	public void nao_deve_aceitar_bairro_vazio(){
 		assertFalse(endereco.getBairro().isEmpty());
 	}
-	
-	@Test (expected=IllegalArgumentException.class)
-	public void nao_deve_aceitar_bairro_tamanho_incorreto(){
-		endereco.setBairro("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+		
+	@Test
+	public void nao_deve_aceitar_bairro_tamanho_minimo(){
+		thrown.expect(IllegalArgumentException.class);
+		endereco.setBairro("kk");
 	}
+	@Test
+	public void nao_deve_aceitar_bairro_tamanho_maximo(){
+		thrown.expect(IllegalArgumentException.class);
+		endereco.setBairro("ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
+	}
+	
+	
 	
 
 }

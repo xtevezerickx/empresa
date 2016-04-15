@@ -3,6 +3,7 @@ package br.com.contmatic.entity.empresa;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class Endereco {
 	private static final int TAMANHO_MAX_NOME_LOGRADOURO = 30;
@@ -14,6 +15,8 @@ public class Endereco {
 	private static final int TAMANHO_MAX_ESTADO = 15;
 	private static final int TAMANHO_MAX_BAIRRO = 25;
 	private static final int TAMANHO_NUMERO = 10;
+	private static final int TAMANHO_MIN_BAIRRO = 4;
+	private static final int TAMANHO_MIN_CIDADE = 3;
 	private String nomeLogradouro;
 	private String tipoLogradouro;
 	private String numero;
@@ -228,9 +231,15 @@ public class Endereco {
 		}
 	}
 	
-	private void validateCidadeTamanhoIncorreto(String cidade){
+	private void validateCidadeTamanhoMaximo(String cidade){
 		if (cidade.length()>TAMANHO_MAX_CIDADE){
 			throw new IllegalArgumentException("O campo cidade não pode conter mais que: "+TAMANHO_MAX_CIDADE+" carateres");
+		}
+	}
+	
+	private void validateCidadeTamanhoMinimo(String cidade){
+		if (cidade.length()<TAMANHO_MIN_CIDADE){
+			throw new IllegalArgumentException("O campo cidade não pode conter menos que: "+TAMANHO_MIN_CIDADE+" carateres");
 		}
 	}
 	
@@ -238,7 +247,8 @@ public class Endereco {
 		this.validateCidadeNotNull(cidade);
 		this.validateCidadeVazio(cidade);
 		this.validateCidadeComNumero(cidade);
-		this.validateCidadeTamanhoIncorreto(cidade);
+		this.validateCidadeTamanhoMinimo(cidade);
+		this.validateCidadeTamanhoMaximo(cidade);
 	}
 	
 	private void validateEstadoNotNull(String estado){
@@ -283,10 +293,17 @@ public class Endereco {
 		}
 	}
 	
+	private void validateBairroTamanhoMinimo(String bairro){
+		if(bairro.length()<TAMANHO_MIN_BAIRRO){
+			throw new IllegalArgumentException("O campo bairro nao pode conter menos que:"+TAMANHO_MIN_BAIRRO+" caracteres");
+		}
+	}
+	
 	private void validateBairroAll(String bairro){
 		this.validateBairroNulo(bairro);
 		this.validateBairroVazio(bairro);
 		this.validateBairroTamanhoIncorreto(bairro);
+		this.validateBairroTamanhoMinimo(bairro);
 	}
 	
 	
@@ -314,10 +331,15 @@ public class Endereco {
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this).append("Nome Logradouro: " + this.nomeLogradouro)
-				.append("Tipo do Logradouro: " + this.tipoLogradouro).append("Numero: " + this.numero)
-				.append("CEP: " + this.cep).append("Cidade" + this.cidade).append("Estado: " + this.estado)
-				.append("Bairro" + this.bairro).toString();
+		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+				.append("Nome Logradouro: " + this.nomeLogradouro)
+				.append("Tipo do Logradouro: " + this.tipoLogradouro)
+				.append("Numero: " + this.numero)
+				.append("CEP: " + this.cep)
+				.append("Cidade" + this.cidade)
+				.append("Estado: " + this.estado)
+				.append("Bairro" + this.bairro)
+				.build();
 
 	}
 

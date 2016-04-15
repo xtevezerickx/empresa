@@ -3,6 +3,7 @@ package br.com.contmatic.entity.empresa;
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -108,7 +109,7 @@ public class Empresa {
 		}
 	}
 
-	private void validateTamanhoCNPJ(String cnpj) {
+	private void validtaeCNPJTamanho(String cnpj) {
 		if (cnpj.length() != TAMANHO_CNPJ) {
 			throw new IllegalArgumentException("Tamanho do CNPJ incorreto");
 		}
@@ -134,7 +135,7 @@ public class Empresa {
 		this.validateCNPJNotNull(cnpj);
 		this.validateCNPJVazio(cnpj);
 		this.validateCNPJContemLetra(cnpj);
-		this.validateTamanhoCNPJ(cnpj);
+		this.validtaeCNPJTamanho(cnpj);
 
 	}
 
@@ -310,16 +311,18 @@ public class Empresa {
 	public String toString() {
 		this.validateDataCriacaoNotNull(dataCriacao);
 		SimpleDateFormat dtf = new SimpleDateFormat("dd/MM/yyyy");
-		return new ToStringBuilder(this, MULTI_LINE_STYLE)
+			
+		return new ToStringBuilder(this,MULTI_LINE_STYLE)
 				.append(this.nomeFantasia != null ? "Nome Fantasia " + this.nomeFantasia : null)
 				.append(this.nomeProprietario != null ? "Nome do Propietário: " + this.nomeProprietario : null)
 				.append(this.cnpj != null ? "CNPJ: " + this.cnpj : null)
 				.append(this.email != null ? "Email:" + this.email : null)
-				.append(this.telefone != null ? "Telefone" + this.telefone : null)
 				.append(this.dataCriacao != null ? "Data de criação" + dtf.format(this.dataCriacao) : null)
 				.append(this.dataAlteracao != null ? "Data da alteração" + dtf.format(this.dataAlteracao) : null)
+				.append(Arrays.toString(telefone))
+				.append(Arrays.toString(endereco))
 				.build();
-
+	
 	}
 
 }

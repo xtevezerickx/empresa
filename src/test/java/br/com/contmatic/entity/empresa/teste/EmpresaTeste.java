@@ -165,12 +165,12 @@ public class EmpresaTeste {
 	}
 	
 	@Test (expected=IllegalArgumentException.class)
-	public void nao_deve_aceitar_nome_proprietario_com_tamanho_maior(){
+	public void nao_deve_aceitar_nome_proprietario_com_tamanho_maximo(){
 		empresa.setNomeProprietario("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
 	}
 	
 	@Test (expected=IllegalArgumentException.class)
-	public void nao_deve_aceitar_nome_proprietario_com_tamanho_menor(){
+	public void nao_deve_aceitar_nome_proprietario_com_tamanho_minimo(){
 		empresa.setNomeProprietario("ffff");
 	}
 	
@@ -190,12 +190,22 @@ public class EmpresaTeste {
 	}
 	@Test (expected=IllegalArgumentException.class)
 	public void nao_deve_aceitar_cnpj_com_tamanho_incorreto(){
-		empresa.setCnpj("1111");
+		empresa.setCnpj("1111111111111111");
 	}
-	@Test 
-	public void nao_deve_aceitar_nomeproprietario_nulo() {
-		assertNotNull(empresa.getNomeProprietario());
+	
+	@Test
+	public void nao_deve_aceitar_cnpj_com_tamanho_menor(){
+		thrown.expect(IllegalArgumentException.class);
+		empresa.setCnpj("1");
 	}
+	
+	@Test
+	public void nao_deve_aceitar_cnpj_com_tamanho_maior(){
+		thrown.expect(IllegalArgumentException.class);
+		empresa.setCnpj("5555555555555555555555");
+	}
+	
+	
 	
 	@Test
 	public void nao_deve_aceitar_email_nulo() {
@@ -246,7 +256,7 @@ public class EmpresaTeste {
 	
 	@Test
 	public void deve_aceitar_data_alteracao_maior_que_data_criacao(){
-		empresa.setDataAlteracao(new Date(116,4,15));
+		empresa.setDataAlteracao(new Date(116,4,18));
 		assertTrue(empresa.getDataAlteracao().after(empresa.getDataCriacao()));
 	}
 	
@@ -276,8 +286,10 @@ public class EmpresaTeste {
 	public void deve_aceitar_telefone_valido(){
 		empresa.setTelefone(telefone);
 	}
+	
+	
 	@Test
-	public void teste(){
+	public void teste_to_string(){
 		System.out.println(empresa);
 	}
 }

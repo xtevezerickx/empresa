@@ -1,7 +1,10 @@
 package br.com.contmatic.entity.empresa;
 
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Telefone {
 	private String numeroTelefone;
@@ -173,8 +176,11 @@ public class Telefone {
 
 	@Override
 	public String toString() {
-		return new StringBuilder().append("Telefone: " + this.numeroTelefone).append("DDD: " + this.ddd)
-				.append("Tipo: " + this.tipoTelefone).toString();
+		return new ToStringBuilder(this,MULTI_LINE_STYLE)
+				.append("Telefone: " + this.numeroTelefone)
+				.append("DDD: " + this.ddd)
+				.append("Tipo: " + this.tipoTelefone)
+				.build();
 	}
 
 }
