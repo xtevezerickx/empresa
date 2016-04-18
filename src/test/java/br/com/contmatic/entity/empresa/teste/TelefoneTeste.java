@@ -1,8 +1,6 @@
 package br.com.contmatic.entity.empresa.teste;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
 import org.junit.After;
