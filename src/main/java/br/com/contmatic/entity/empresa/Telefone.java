@@ -128,13 +128,13 @@ public class Telefone {
 	
 	private void validateTipoTelefoneTamanhoMaximo(String tipoTelefone){
 		if (tipoTelefone.length()>TAMANHO_TIPO_TELEFONE){
-			throw new IllegalArgumentException("O tamanho do tipo de telefone não pode ser maior que: "+TAMANHO_TIPO_TELEFONE);
+			throw new IllegalArgumentException("O tamanho do tipo de telefone não pode ser maior que o tamanho aceitavel");
 		}
 	}
 	
 	private void validateTipoTelefoneTamanhoMinimo(String tipoTelefone){
 		if(tipoTelefone.length()<TAMANHO_MIN_TIPO_TELEFONE){
-			throw new IllegalArgumentException("O tamanho do tipo de telefone não pode ser menor que: "+TAMANHO_MIN_TIPO_TELEFONE);
+			throw new IllegalArgumentException("O tamanho do tipo de telefone não pode ser menor que o tamanho aceitavel");
 		}
 	}
 	

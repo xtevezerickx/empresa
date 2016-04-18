@@ -1,5 +1,6 @@
 package br.com.contmatic.entity.empresa.teste;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -12,6 +13,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -28,43 +30,44 @@ public class EmpresaTeste {
 	private Telefone[] telefone;
 	private Endereco[] enderecoInvalido;
 	private Telefone[] telefoneInvalido;
-	
-	
+
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		System.out.println("Metodos sendo utilizados antes de iniciar a classe");
-		
+		System.out.println("Metodos sendo utilizados antes de iniciar a classe Empresa Teste");
+
 	}
-	
+
 	@After
-	public void tearDown(){
+	public void tearDown() {
 		empresa = null;
-		endereco= null;
-		telefone =null;
-		//System.out.println("Depois de cada teste");
+		endereco = null;
+		telefone = null;
+		// System.out.println("Depois de cada teste");
 	}
+
 	@AfterClass
 	public static void tearDownAfterClass() {
-		System.out.println("Metodos executados depois da classe");
+		System.out.println("Metodos executados depois da classe Empresa Teste");
 	}
-	
+
 	@Before
 	public void setUp() {
+
 		empresa = new Empresa();
 		endereco = new Endereco[2];
-		endereco[0]= new Endereco();
-		endereco[1]= new Endereco();
+		endereco[0] = new Endereco();
+		endereco[1] = new Endereco();
 		telefone = new Telefone[2];
-		telefone[0]= new Telefone();
+		telefone[0] = new Telefone();
 		telefone[1] = new Telefone();
 		enderecoInvalido = new Endereco[2];
 		enderecoInvalido[1] = new Endereco();
-		telefoneInvalido = new Telefone[2]; 
+		telefoneInvalido = new Telefone[2];
 		telefoneInvalido[0] = new Telefone();
-		
+
 		endereco[0].setNomeLogradouro("rua tal tal tal");
 		endereco[0].setCep("03378010");
 		endereco[0].setCidade("Sao paulo");
@@ -72,11 +75,11 @@ public class EmpresaTeste {
 		endereco[0].setTipoLogradouro("rua");
 		endereco[0].setNumero("142");
 		endereco[0].setBairro("bairro x");
-				
+
 		telefone[0].setDdd("011");
 		telefone[0].setNumeroTelefone("634570287");
 		telefone[0].setTipoTelefone("celular");
-				
+
 		endereco[1].setNomeLogradouro("rua 2");
 		endereco[1].setCep("03378010");
 		endereco[1].setCidade("Poços de Caldas");
@@ -84,11 +87,11 @@ public class EmpresaTeste {
 		endereco[1].setTipoLogradouro("avenida");
 		endereco[1].setNumero("153");
 		endereco[1].setBairro("bairro Z");
-		
+
 		telefone[1].setDdd("035");
 		telefone[1].setNumeroTelefone("123456789");
 		telefone[1].setTipoTelefone("comercial");
-						
+
 		enderecoInvalido[1].setNomeLogradouro("rua 3");
 		enderecoInvalido[1].setCep("03378015");
 		enderecoInvalido[1].setCidade("Rio de Janeiro");
@@ -96,11 +99,11 @@ public class EmpresaTeste {
 		enderecoInvalido[1].setTipoLogradouro("avenida");
 		enderecoInvalido[1].setNumero("1223");
 		enderecoInvalido[1].setBairro("bairro da tijuca");
-		
+
 		telefoneInvalido[0].setDdd("011");
 		telefoneInvalido[0].setNumeroTelefone("123456889");
 		telefoneInvalido[0].setTipoTelefone("comercial");
-					
+
 		empresa.setCnpj("11123121111111");
 		empresa.setEmail("ssssssss@sss.com.br");
 		empresa.setEndereco(endereco);
@@ -108,186 +111,239 @@ public class EmpresaTeste {
 		empresa.setNomeProprietario("proprietario");
 		empresa.setTelefone(telefone);
 		empresa.setDataCriacao(new Date());
-		
+
 	}
 
-	@Test (timeout=1000)
-	public void deve_aceitar_nome_fantasia_valido(){
-		empresa.getNomeFantasia();
+	@Test(timeout = 1000)
+	public void deve_aceitar_nome_fantasia_valido() {
+		String nomeFantasia = "nome empresa";
+		empresa.setNomeFantasia(nomeFantasia);
+		assertEquals(nomeFantasia, empresa.getNomeFantasia());
 	}
-	@Test (timeout=1000)
-	public void deve_aceitar_nome_proprietario_valido(){
-		empresa.getNomeProprietario();
+
+	@Test(timeout = 1000)
+	public void deve_aceitar_nome_proprietario_valido() {
+		String nomeProprietario = "Erick Maia";
+		empresa.setNomeProprietario(nomeProprietario);
+		assertEquals(nomeProprietario, empresa.getNomeProprietario());
 	}
-	@Test (timeout=1000)
-	public void deve_aceitar_cnpj_valido(){
-		empresa.getCnpj();
+
+	@Test(timeout = 1000)
+	public void deve_aceitar_cnpj_valido() {
+		String cnpj = "11123121111111";
+		empresa.setCnpj(cnpj);
+		assertEquals(cnpj, empresa.getCnpj());
 	}
-	
-	@Test (timeout=1000)
-	public void deve_aceitar_email_valido(){
-		empresa.getEmail();
+
+	@Test(timeout = 1000)
+	public void deve_aceitar_email_valido() {
+		String email = "erick@mail.com.br";
+		empresa.setEmail(email);
+		assertEquals(email, empresa.getEmail());
 	}
-	
+
 	@Test
 	public void nao_deve_aceitar_nome_fantasia_nulo() {
-		assertNotNull(empresa.getNomeFantasia());
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Nome Fantasia não pode ser nulo");
+		empresa.setNomeFantasia(null);
 	}
-	
+
 	@Test
-	public void nao_deve_aceitar_nome_fantasia_vazio(){
-		assertFalse(empresa.getNomeFantasia().isEmpty());
+	public void nao_deve_aceitar_nome_fantasia_vazio() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Nome Fantasia não pode estar vazio");
+		empresa.setNomeFantasia("");
+		// assertFalse(empresa.getNomeFantasia().isEmpty());
 	}
-	@Test (expected=IllegalArgumentException.class)
-	public void nao_deve_aceitar_nome_fantasia_com_minimo_de_caracteres(){
+
+	@Test
+	public void nao_deve_aceitar_nome_fantasia_com_minimo_de_caracteres() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O Tamanho do nome fantasia esta menor que o aceitavel");
 		empresa.setNomeFantasia("aaaa");
 	}
-	@Test (expected=IllegalArgumentException.class)
-	public void nao_deve_aceitar_nome_fantasia_com_maximo_de_caracteres(){
+
+	@Test
+	public void nao_deve_aceitar_nome_fantasia_com_maximo_de_caracteres() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O Tamanho do nome fantasia esta maior que o aceitavel");
 		empresa.setNomeFantasia("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 	}
 
 	@Test
-	public void nao_deve_aceitar_nome_proprietario_nulo(){
-		assertNotNull(empresa.getNomeProprietario());
+	public void nao_deve_aceitar_nome_proprietario_nulo() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Nome do proprietário não pode ser nulo");
+		empresa.setNomeProprietario(null);
 	}
-	
-	@Test (expected=IllegalArgumentException.class)
-	public void nao_deve_aceitar_nome_proprietario_com_numeros(){
+
+	@Test
+	public void nao_deve_aceitar_nome_proprietario_com_numeros() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Nome do proprietario não pode conter numeros");
 		empresa.setNomeProprietario("er111");
 	}
-	
+
 	@Test
-	public void nao_deve_aceitar_nome_proprietario_vazio(){
-		assertFalse(empresa.getNomeProprietario().isEmpty());
+	public void nao_deve_aceitar_nome_proprietario_vazio() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Nome do proprietário não pode estar vazio");
+		empresa.setNomeProprietario("");
+
 	}
-	
-	@Test (expected=IllegalArgumentException.class)
-	public void nao_deve_aceitar_nome_proprietario_com_tamanho_maximo(){
+
+	@Test
+	public void nao_deve_aceitar_nome_proprietario_com_tamanho_maximo() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O Tamanho do nome proprietario esta maior que o tamanho aceitavel");
 		empresa.setNomeProprietario("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
 	}
-	
-	@Test (expected=IllegalArgumentException.class)
-	public void nao_deve_aceitar_nome_proprietario_com_tamanho_minimo(){
+
+	@Test
+	public void nao_deve_aceitar_nome_proprietario_com_tamanho_minimo() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O Tamanho do nome proprietario esta menor que o tamanho aceitavel");
 		empresa.setNomeProprietario("ffff");
 	}
-	
-	
+
 	@Test
 	public void nao_deve_aceitar_cnpj_nulo() {
-		assertNotNull(empresa.getCnpj());
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("CNPJ não pode ser nulo");
+		empresa.setCnpj(null);
 	}
 
-	@Test (expected=IllegalArgumentException.class)
-	public void nao_deve_aceitar_cnpj_com_letras(){
-		empresa.setCnpj("asdfas");
-	}
 	@Test
-	public void nao_deve_aceitar_cnpj_vazio(){
-		assertFalse(empresa.getCnpj().isEmpty());
-	}
-	@Test (expected=IllegalArgumentException.class)
-	public void nao_deve_aceitar_cnpj_com_tamanho_incorreto(){
-		empresa.setCnpj("1111111111111111");
-	}
-	
-	@Test
-	public void nao_deve_aceitar_cnpj_com_tamanho_menor(){
+	public void nao_deve_aceitar_cnpj_com_letras() {
 		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("CNPJ não pode conter letras");
+		empresa.setCnpj("1111111ff");
+	}
+
+	@Test
+	public void nao_deve_aceitar_cnpj_vazio() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("CNPJ não pode estar vazio");
+		empresa.setCnpj("");
+		
+	}
+
+	@Test
+	public void nao_deve_aceitar_cnpj_com_tamanho_menor() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Tamanho do CNPJ incorreto");
 		empresa.setCnpj("1");
 	}
-	
+
 	@Test
-	public void nao_deve_aceitar_cnpj_com_tamanho_maior(){
+	public void nao_deve_aceitar_cnpj_com_tamanho_maior() {
 		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Tamanho do CNPJ incorreto");
 		empresa.setCnpj("5555555555555555555555");
 	}
-	
-	
-	
+
 	@Test
 	public void nao_deve_aceitar_email_nulo() {
-		assertNotNull(empresa.getEmail());
-	}
-	
-	@Test
-	public void nao_deve_aceitar_email_vazio(){
-		assertFalse(empresa.getEmail().isEmpty());
-	}
-	
-	@Test (expected=IllegalArgumentException.class)
-	public void nao_deve_aceitar_email_tamanho_maximo(){
-		empresa.setEmail("fffffffffffffffffffffffffffffffffffffff");
-	}
-	
-	@Test (expected=IllegalArgumentException.class)
-	public void nao_deve_aceitar_email_tamanho_minimo(){
-		empresa.setEmail("fff");
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Email não pode ser nulo");
+		empresa.setEmail(null);
 	}
 
-	
-	@Test 
+	@Test
+	public void nao_deve_aceitar_email_vazio() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Email não pode ser vazio");
+		empresa.setEmail("");
+	}
+
+	@Test
+	public void nao_deve_aceitar_email_tamanho_maximo() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O Tamanho do email esta maior que o aceitavel");
+		empresa.setEmail("fffffffffffffffffffffffffffffffffffffff");
+	}
+
+	@Test
+	public void nao_deve_aceitar_email_tamanho_minimo() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O Tamanho do email esta menor que o aceitavel");
+		empresa.setEmail("fff");
+		// assertEquals(3,empresa.getEmail().length());
+	}
+
+	@Test
 	public void nao_deve_aceitar_endereco_nulo() {
-		assertNotNull(empresa.getEndereco());
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Endereco não pode ser nulo");
+		empresa.setEndereco(null);
 	}
-		
-	
+
 	@Test
-	public void nao_deve_aceitar_data_criacao_nulo(){
-		assertNotNull(empresa.getDataCriacao());
+	public void nao_deve_aceitar_data_criacao_nulo() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("A data de criação não pode ser nula");
+		empresa.setDataCriacao(null);
 	}
-		
-	
-	@Test (expected = IllegalStateException.class)
-	public void nao_deve_aceitar_data_criacao_maior_que_atual(){
+
+	@Test
+	public void nao_deve_aceitar_data_criacao_maior_que_atual() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("A data de criação não pode ser maior que a atual");
 		empresa.setDataCriacao(new Date(2050, 1, 10));
-		
+
 	}
-	
-	@Test 
-	public void nao_deve_aceitar_data_criacao_menor_que_atual(){
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage("A data da alteração não pode ser antes que a data de criação");
-		empresa.setDataAlteracao(new Date(100,0,25));
-		
-	}
-	
+
 	@Test
-	public void deve_aceitar_data_alteracao_maior_que_data_criacao(){
-		empresa.setDataAlteracao(new Date(116,4,18));
+	public void nao_deve_aceitar_data_criacao_menor_que_atual() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("A data da alteração não pode ser antes que a data de criação");
+		empresa.setDataAlteracao(new Date(100, 0, 25));
+
+	}
+
+	@Test
+	public void deve_aceitar_data_alteracao_maior_que_data_criacao() {
+		Date dataAlteracao = new Date(116,4,19);
+		empresa.setDataAlteracao(dataAlteracao);
 		assertTrue(empresa.getDataAlteracao().after(empresa.getDataCriacao()));
 	}
-	
-	
+
 	@Test
-	public void deve_aceitar_data_criacao_valida(){
-		empresa.getDataCriacao();
+	public void deve_aceitar_data_criacao_valida() {
+		empresa.setDataCriacao(new Date());
+		assertEquals (new Date(),empresa.getDataCriacao());
 	}
-	
-	@Test 
-	public void nao_deve_aceitar_endereco_invalido(){
-		thrown.expect(IllegalStateException.class);
+
+	@Test
+	public void nao_deve_aceitar_endereco_invalido() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("É Necessário preecher todos os enderecos da empresa");
 		empresa.setEndereco(enderecoInvalido);
 	}
+
 	@Test
-	public void deve_aceitar_endereco_valido(){
+	public void deve_aceitar_endereco_valido() {
 		empresa.setEndereco(endereco);
+		assertEquals(endereco,empresa.getEndereco());
 	}
-	
+
 	@Test
-	public void nao_deve_aceitar_telefone_invalido(){
-		thrown.expect(IllegalStateException.class);
+	public void nao_deve_aceitar_telefone_invalido() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("É Necessário preecher todos os telefones da empresa");
 		empresa.setTelefone(telefoneInvalido);
 	}
-	
+
 	@Test
-	public void deve_aceitar_telefone_valido(){
+	public void deve_aceitar_telefone_valido() {
 		empresa.setTelefone(telefone);
+		assertEquals(telefone,empresa.getTelefone());
 	}
-	
-//	@Ignore
+
+	@Ignore
 	@Test
-	public void teste_to_string(){
+	public void teste_to_string() {
 		System.out.println(empresa);
 	}
 }

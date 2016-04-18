@@ -26,7 +26,6 @@ public class Empresa {
 	private Endereco[] endereco;
 	private Date dataCriacao;
 	private Date dataAlteracao;
-	
 
 	public String getNomeFantasia() {
 		return nomeFantasia;
@@ -60,6 +59,7 @@ public class Empresa {
 	}
 
 	public void setEndereco(Endereco[] endereco) {
+		this.validateEnderecoNotNull(endereco);
 		this.validateEmpresaPrecisaDeDoisEnderecos(endereco);
 		this.endereco = endereco;
 	}
@@ -153,15 +153,13 @@ public class Empresa {
 
 	private void validateNomeFantasiaTamanhoMinimo(String nomeFantasia) {
 		if (nomeFantasia.length() < TAMANHO_MIN_NOME_FANTASIA) {
-			throw new IllegalArgumentException(
-					"O Tamanho do nome fantasia esta menor que: " + TAMANHO_MIN_NOME_FANTASIA);
+			throw new IllegalArgumentException("O Tamanho do nome fantasia esta menor que o aceitavel");
 		}
 	}
 
 	private void validateNomeFantasiaTamanhoMaximo(String nomeFantasia) {
 		if (nomeFantasia.length() > TAMANHO_MAX_NOME_FANTASIA) {
-			throw new IllegalArgumentException(
-					"O Tamanho do nome fantasia esta maior que: " + TAMANHO_MAX_NOME_FANTASIA);
+			throw new IllegalArgumentException("O Tamanho do nome fantasia esta maior que o aceitavel");
 		}
 	}
 
@@ -187,15 +185,13 @@ public class Empresa {
 
 	private void validateNomeProprietarioTamanhoMinimo(String nomeProprietario) {
 		if (nomeProprietario.length() < TAMANHO_MIN_NOME_PROPRIETARIO) {
-			throw new IllegalArgumentException(
-					"O Tamanho do nome proprietario esta menor que: " + TAMANHO_MIN_NOME_PROPRIETARIO);
+			throw new IllegalArgumentException("O Tamanho do nome proprietario esta menor que o tamanho aceitavel");
 		}
 	}
 
 	private void validateNomeProprietarioTamanhoMaximo(String nomeProprietario) {
 		if (nomeProprietario.length() > TAMANHO_MAX_NOME_PROPRIETARIO) {
-			throw new IllegalArgumentException(
-					"O Tamanho do nome fantasia esta maior que: " + TAMANHO_MAX_NOME_PROPRIETARIO);
+			throw new IllegalArgumentException("O Tamanho do nome proprietario esta maior que o tamanho aceitavel");
 		}
 	}
 
@@ -211,9 +207,10 @@ public class Empresa {
 	private void validateNomeProprietarioAll(String nomeProprietario) {
 		this.validateNomeProprietarioNotNull(nomeProprietario);
 		this.validateNomeProprietarioVazio(nomeProprietario);
+		this.validateNomeProprietarioComNumeros(nomeProprietario);
 		this.validateNomeProprietarioTamanhoMinimo(nomeProprietario);
 		this.validateNomeProprietarioTamanhoMaximo(nomeProprietario);
-		this.validateNomeProprietarioComNumeros(nomeProprietario);
+		
 	}
 
 	private void validateEmailNotNull(String email) {
@@ -230,13 +227,13 @@ public class Empresa {
 
 	private void validateEmailTamanhoMinimo(String email) {
 		if (email.length() < TAMANHO_MIN_EMAIL) {
-			throw new IllegalArgumentException("O Tamanho do email esta menor que: " + TAMANHO_MIN_EMAIL);
+			throw new IllegalArgumentException("O Tamanho do email esta menor que o aceitavel");
 		}
 	}
 
 	private void validateEmailTamanhoMaximo(String email) {
 		if (email.length() > TAMANHO_MAX_EMAIL) {
-			throw new IllegalArgumentException("O Tamanho do email esta maior que: " + TAMANHO_MAX_EMAIL);
+			throw new IllegalArgumentException("O Tamanho do email esta maior que o aceitavel");
 		}
 	}
 
@@ -247,18 +244,25 @@ public class Empresa {
 		this.validateEmailTamanhoMaximo(email);
 
 	}
-	private void validateEmpresaPrecisaDeDoisEnderecos(Endereco[] endereco){
-		for (int i=0;i<endereco.length;i++){
-			if(endereco[i]==null){
-				throw new IllegalStateException("É Necessário preecher todos os enderecos da empresa");
+
+	private void validateEmpresaPrecisaDeDoisEnderecos(Endereco[] endereco) {
+		for (int i = 0; i < endereco.length; i++) {
+			if (endereco[i] == null) {
+				throw new IllegalArgumentException("É Necessário preecher todos os enderecos da empresa");
 			}
 		}
 	}
-	
-	private void validateEmpresaPrecisaDeDoisTelefones(Telefone[] telefone){
+
+	private void validateEnderecoNotNull(Endereco[] endereco) {
+		if (endereco == null) {
+			throw new IllegalArgumentException("Endereco não pode ser nulo");
+		}
+	}
+
+	private void validateEmpresaPrecisaDeDoisTelefones(Telefone[] telefone) {
 		for (int i = 0; i < telefone.length; i++) {
-			if (telefone[i]==null) {
-				throw new IllegalStateException("É Necessário preecher todos os telefones da empresa");
+			if (telefone[i] == null) {
+				throw new IllegalArgumentException("É Necessário preecher todos os telefones da empresa");
 			}
 		}
 	}
@@ -268,27 +272,24 @@ public class Empresa {
 			throw new IllegalArgumentException("A data de criação não pode ser nula");
 		}
 	}
-	
+
 	private void validateDataCriacaoMaiorQueAtual(Date dataCriacao) {
 		if (dataCriacao.after(new Date())) {
-			throw new IllegalStateException("A data de criação não pode ser maior que a atual");
+			throw new IllegalArgumentException("A data de criação não pode ser maior que a atual");
 		}
 	}
 
 	private void validateDataCriacaoMenorQueAtual(Date dataCriacao) {
 		if (dataCriacao.before(new Date())) {
-			throw new IllegalStateException("A data de criação não pode ser menor que a atual");
+			throw new IllegalArgumentException("A data de criação não pode ser menor que a atual");
 		}
 	}
 
 	private void validateDataAlteracaoMaiorQueDataCriacao(Date dataAlteracao) {
 		if (dataAlteracao.before(this.getDataCriacao())) {
-			throw new IllegalStateException("A data da alteração não pode ser antes que a data de criação");
+			throw new IllegalArgumentException("A data da alteração não pode ser antes que a data de criação");
 		}
 	}
-	
-	
-
 
 	@Override
 	public int hashCode() {
@@ -311,18 +312,16 @@ public class Empresa {
 	public String toString() {
 		this.validateDataCriacaoNotNull(dataCriacao);
 		SimpleDateFormat dtf = new SimpleDateFormat("dd/MM/yyyy");
-			
-		return new ToStringBuilder(this,MULTI_LINE_STYLE)
+
+		return new ToStringBuilder(this, MULTI_LINE_STYLE)
 				.append(this.nomeFantasia != null ? "Nome Fantasia: " + this.nomeFantasia : null)
 				.append(this.nomeProprietario != null ? "Nome do Propietário: " + this.nomeProprietario : null)
 				.append(this.cnpj != null ? "CNPJ: " + this.cnpj : null)
 				.append(this.email != null ? "Email: " + this.email : null)
 				.append(this.dataCriacao != null ? "Data de criação: " + dtf.format(this.dataCriacao) : null)
 				.append(this.dataAlteracao != null ? "Data da alteração: " + dtf.format(this.dataAlteracao) : null)
-				.append(Arrays.toString(telefone))
-				.append(Arrays.toString(endereco))
-				.build();
-	
+				.append(Arrays.toString(telefone)).append(Arrays.toString(endereco)).build();
+
 	}
 
 }

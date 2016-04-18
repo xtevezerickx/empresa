@@ -19,7 +19,7 @@ public class EnderecoTeste {
 	private Endereco endereco;
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		System.out.println("Metodos sendo utilizados antes de iniciar a classe");
+		System.out.println("Metodos sendo utilizados antes de iniciar a classe Endereco Teste");
 		
 	}
 	
@@ -32,7 +32,7 @@ public class EnderecoTeste {
 	}
 	@AfterClass
 	public static void tearDownAfterClass() {
-		System.out.println("Metodos executados depois da classe");
+		System.out.println("Metodos executados depois da classe Endereco Teste");
 	}
 	@Before
 	public void setUp(){
