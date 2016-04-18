@@ -88,7 +88,7 @@ public class Endereco {
 		this.validateBairroAll(bairro);
 		this.bairro = bairro;
 	}
-
+	
 	private void validateNomeLogradouroNotNull(String nomeLogradouro){
 		if(nomeLogradouro==null){
 			throw new IllegalArgumentException("Nome Logradouro não pode ser nulo");
@@ -103,13 +103,13 @@ public class Endereco {
 	
 	private void validateNomeLogradouroTamanhoMaximo(String nomeLogradouro){
 		if(nomeLogradouro.length()>TAMANHO_MAX_NOME_LOGRADOURO){
-			throw new IllegalArgumentException("Tamanho Maximo do logradouro é: "+TAMANHO_MAX_NOME_LOGRADOURO);
+			throw new IllegalArgumentException("O tamanho do nome logradouro esta maior que o aceitavel");
 		}
 	}
 	
 	private void validateNomeLogradouroTamanhoMinimo(String nomeLogradrouro){
 		if(nomeLogradrouro.length()<TAMANHO_MIN_NOME_LOGRADOURO){
-			throw new IllegalArgumentException("Tamanho Minimo do logradouro é: "+ TAMANHO_MIN_NOME_LOGRADOURO);
+			throw new IllegalArgumentException("O tamanho do nome logradouro esta menor que o aceitavel");
 		}
 	}
 	
@@ -134,13 +134,13 @@ public class Endereco {
 	
 	private void validateTipoLogradouroTamanhoMaximo(String tipoLogradouro){
 		if(tipoLogradouro.length()>TAMANHO_MAX_TIPO_LOGRADOURO){
-			throw new IllegalArgumentException("Tamanho Maximo do logradouro é: "+TAMANHO_MAX_TIPO_LOGRADOURO);
+			throw new IllegalArgumentException("O tipo de logradouro esta maior que o aceitavel");
 		}
 	}
 	
 	private void validateTipoLogradouroTamanhoMinimo(String tipoLogradouro){
 		if(tipoLogradouro.length()<TAMANHO_MIN_TIPO_LOGRADOURO){
-			throw new IllegalArgumentException("Tamanho Minimo do logradouro é: "+ TAMANHO_MIN_TIPO_LOGRADOURO);
+			throw new IllegalArgumentException("O tipo de logradouro esta menor que o aceitavel");
 		}
 	}
 	
@@ -165,7 +165,7 @@ public class Endereco {
 	
 	private void validateNumeroTamanhoIncorreto(String numero){
 		if(numero.length()>TAMANHO_NUMERO){
-			throw new IllegalArgumentException("O campo numero esta incorreto precisa ter: "+TAMANHO_NUMERO);
+			throw new IllegalArgumentException("O campo numero esta com tamanho incorreto");
 		}
 	}
 	
@@ -193,13 +193,13 @@ public class Endereco {
 	
 	private void validateCepVazio(String cep){
 		if(cep.isEmpty()){
-			throw new IllegalArgumentException("O CEP não pode ser avzio");
+			throw new IllegalArgumentException("O CEP não pode ser vazio");
 		}
 	}
 	
 	private void validateCepTamanhoIncorreto(String cep){
 		if (cep.length()!=TAMANHO_CEP){
-			throw new IllegalArgumentException("O tamanho do CEP esta incorreto, o tamanho do cep é: "+TAMANHO_CEP);
+			throw new IllegalArgumentException("O tamanho do CEP esta incorreto");
 		}
 	}
 	
@@ -231,15 +231,24 @@ public class Endereco {
 		}
 	}
 	
+	private void validateEstadoComNumero(String estado){
+		for (int i = 0; i < estado.length(); i++) {
+			char estadochar = estado.charAt(i);
+			if(Character.isDigit(estadochar)){
+				throw new IllegalArgumentException("O estado não pode conter numeros");
+			}
+		}
+	}
+	
 	private void validateCidadeTamanhoMaximo(String cidade){
 		if (cidade.length()>TAMANHO_MAX_CIDADE){
-			throw new IllegalArgumentException("O campo cidade não pode conter mais que: "+TAMANHO_MAX_CIDADE+" carateres");
+			throw new IllegalArgumentException("O campo cidade contem mais caracteres que o aceitavel");
 		}
 	}
 	
 	private void validateCidadeTamanhoMinimo(String cidade){
 		if (cidade.length()<TAMANHO_MIN_CIDADE){
-			throw new IllegalArgumentException("O campo cidade não pode conter menos que: "+TAMANHO_MIN_CIDADE+" carateres");
+			throw new IllegalArgumentException("O campo cidade contem menos caracteres que o aceitavel");
 		}
 	}
 	
@@ -265,13 +274,14 @@ public class Endereco {
 	
 	private void validateEstadoTamanhoCorreto(String estado){
 		if(estado.length()>TAMANHO_MAX_ESTADO){
-			throw new IllegalArgumentException("O campo estado nao pode conter mais que: "+TAMANHO_MAX_ESTADO+" caracteres");
+			throw new IllegalArgumentException("O tamanho do campo estado esta incorreto");
 		}
 	}
 	
 	private void validateEstadoAll(String estado){
 		this.validateEstadoNotNull(estado);
 		this.validateEstadoVazio(estado);
+		this.validateEstadoComNumero(estado);
 		this.validateEstadoTamanhoCorreto(estado);
 	}
 	
@@ -289,13 +299,13 @@ public class Endereco {
 	
 	private void validateBairroTamanhoIncorreto(String bairro){
 		if(bairro.length()>TAMANHO_MAX_BAIRRO){
-			throw new IllegalArgumentException("O campo bairro nao pode conter mais que: "+TAMANHO_MAX_BAIRRO+" caracteres");
+			throw new IllegalArgumentException("O campo bairro contem mais caracteres que o aceitavel");
 		}
 	}
 	
 	private void validateBairroTamanhoMinimo(String bairro){
 		if(bairro.length()<TAMANHO_MIN_BAIRRO){
-			throw new IllegalArgumentException("O campo bairro nao pode conter menos que:"+TAMANHO_MIN_BAIRRO+" caracteres");
+			throw new IllegalArgumentException("O campo bairro contem menos caracteres que o aceitavel");
 		}
 	}
 	

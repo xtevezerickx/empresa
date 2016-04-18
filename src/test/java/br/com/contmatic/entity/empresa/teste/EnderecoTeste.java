@@ -48,116 +48,171 @@ public class EnderecoTeste {
 	
 	@Test (timeout=1000)
 	public void deve_aceitar_nome_logradouro_valido(){
-		endereco.getNomeLogradouro();
+		String nomeLogradouro = "rua alves de almeida";
+		endereco.setNomeLogradouro(nomeLogradouro);
+		assertEquals(nomeLogradouro,endereco.getNomeLogradouro());
 	}
 	
 	@Test(timeout=1000)
 	public void deve_aceitar_tipo_logradouro_valido(){
-		endereco.getTipoLogradouro();
+		String tipoLogradouro = "avenida";
+		endereco.setTipoLogradouro(tipoLogradouro);
+		assertEquals(tipoLogradouro,endereco.getTipoLogradouro());
 	}
 	
 	@Test(timeout=1000)
 	public void deve_aceitar_numero_valido(){
-		endereco.getNumero();
+		String numero = "41";
+		endereco.setNumero(numero);
+		assertEquals(numero,endereco.getNumero());
+		
 	}
 	
 	@Test(timeout=1000)
 	public void deve_aceitar_cep_valido(){
-		endereco.getCep();
+		String cep = "03378010";
+		endereco.setCep(cep);
+		assertEquals(cep,endereco.getCep());
 	}
 	
 	@Test (timeout=1000)
 	public void deve_aceitar_cidade_valido(){
-		endereco.getCidade();
+		String cidade = "Sao paulo";
+		endereco.setCidade(cidade);
+		assertEquals(cidade, endereco.getCidade());
 	}
 	
 	@Test(timeout=1000)
 	public void deve_aceitar_estado_valido(){
-		endereco.getEstado();
+		String estado = "Sao Paulo";
+		endereco.setEstado(estado);
+		assertEquals(estado,endereco.getEstado());
 	}
 	
 	@Test (timeout=1000)
 	public void deve_aceitar_bairro_valido(){
-		endereco.getBairro();
+		String bairro = "jd vila formosa";
+		endereco.setBairro(bairro);
+		assertEquals(bairro,endereco.getBairro());
+	
 	}
 	
 	@Test
 	public void nao_deve_aceitar_nome_logradouro_nulo(){
-		assertNotNull(endereco.getNomeLogradouro());
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Nome Logradouro não pode ser nulo");
+		endereco.setNomeLogradouro(null);
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
+	@Test 
 	public void nao_deve_aceitar_nome_logradouro_tamanho_maximo(){
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O tamanho do nome logradouro esta maior que o aceitavel");		
 		endereco.setNomeLogradouro("fffffffffffffffffffffffffffffffffffffff");
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
+	@Test 
 	public void nao_deve_aceitar_nome_logradouro_tamanho_minimo(){
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O tamanho do nome logradouro esta menor que o aceitavel");
 		endereco.setNomeLogradouro("d");
 	}
 	
 	@Test
 	public void nao_deve_aceitar_nome_logradouro_vazio(){
-		assertFalse(endereco.getNomeLogradouro().isEmpty());
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Nome Logradouro não pode estar vazio");
+		endereco.setNomeLogradouro("");
+		
 	}
 	
 	@Test
 	public void nao_deve_aceitar_tipo_logradouro_nulo(){
-		assertNotNull(endereco.getTipoLogradouro());
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Tipo do logradouro nao pode ser nulo");
+		endereco.setTipoLogradouro(null);
+		
 	}
 	
 	@Test
 	public void nao_deve_aceitar_tipo_logradouro_vazio(){
-		assertFalse(endereco.getTipoLogradouro().isEmpty());
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Tipo do logradouro não pode ser vazio");
+		endereco.setTipoLogradouro("");
+				
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
+	@Test 
 	public void nao_deve_aceitar_tipo_logradouro_tamanho_maximo(){
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O tipo de logradouro esta maior que o aceitavel");
 		endereco.setTipoLogradouro("lklklllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
+	@Test
 	public void nao_deve_aceitar_tipo_logradouro_tamanho_minimo(){
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O tipo de logradouro esta menor que o aceitavel");
 		endereco.setTipoLogradouro("f");
 	}
 	
 	@Test
 	public void nao_deve_aceitar_numero_nulo(){
-		assertNotNull(endereco.getNumero());
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O numero não pode ser nulo");
+		endereco.setNumero(null);
 	}
 	
 	@Test
 	public void nao_deve_aceitar_numero_vazio(){
-		assertFalse(endereco.getNumero().isEmpty());
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O numero não pode ser vazio");
+		endereco.setNumero("");
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
+	@Test 
 	public void nao_deve_aceitar_numero_tamanho_incorreto(){
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O campo numero esta com tamanho incorreto");
+		
 		endereco.setNumero("11111111111");
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
+	@Test
 	public void nao_deve_aceitar_cep_com_letras(){
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O CEP não pode conter letras");
+		
 		endereco.setCep("1234567k");
 	}
 	
 	@Test 
 	public void nao_deve_aceitar_cep_nulo(){
-		assertNotNull(endereco.getCep());
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O CEP não pode ser nulo ");
+		endereco.setCep(null);
+		
 	}
 	
 	@Test
 	public void nao_deve_aceitar_cep_vazio(){
-		assertFalse(endereco.getCep().isEmpty());
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O CEP não pode ser vazio");
+		endereco.setCep("");
+		
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
+	@Test 
 	public void nao_deve_aceitar_cep_tamanho_maior(){
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O tamanho do CEP esta incorreto");
 		endereco.setCep("123456789");
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
+	@Test 
 	public void nao_deve_aceitar_cep_tamanho_menor(){
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O tamanho do CEP esta incorreto");
 		endereco.setCep("1234567");
 	}
 	
@@ -165,69 +220,98 @@ public class EnderecoTeste {
 	
 	@Test
 	public void nao_deve_aceitar_cidade_nulo(){
-		assertNotNull(endereco.getCidade());
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("A cidade não pode ser nulo");
+		endereco.setCidade(null);
+		
 	}
 	
 	@Test
 	public void nao_deve_aceitar_cidade_vazio(){
-		assertFalse(endereco.getCidade().isEmpty());
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("A cidade não pode ser vazio");
+		endereco.setCidade("");
+		
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
+	@Test 
 	public void nao_deve_aceitar_cidade_com_numero(){
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("A cidade não pode conter numeros");
 		endereco.setCidade("fdf33");
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
+	@Test 
 	public void nao_deve_aceitar_cidade_tamanho_maior(){
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O campo cidade contem mais caracteres que o aceitavel");
 		endereco.setCidade("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
 	}
 	
 	@Test
 	public void nao_deve_aceitar_cidade_tamanho_menor(){
 		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O campo cidade contem menos caracteres que o aceitavel");
 		endereco.setCidade("oi");
 	}
 	
 	
 	@Test
 	public void nao_deve_aceitar_estado_nulo(){
-		assertNotNull(endereco.getCidade());
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O estado não pode ser nulo");
+		endereco.setEstado(null);
 	}
 	
 	@Test
 	public void nao_deve_aceitar_estado_vazio(){
-		assertFalse(endereco.getCidade().isEmpty());
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O estado não pode ser vazio");
+		endereco.setEstado("");
+		
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
+	@Test 
 	public void nao_deve_aceitar_estado_com_numero(){
-		endereco.setCidade("Sao Paulo0");
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O estado não pode conter numeros");
+		endereco.setEstado("Sao Paulo0");
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
+	@Test 
 	public void nao_deve_aceitar_estado_com_tamanho_incorreto(){
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O tamanho do campo estado esta incorreto");
 		endereco.setEstado("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
 	}
 	
 	@Test
 	public void nao_deve_aceitar_bairro_nulo(){
-		assertNotNull(endereco.getBairro());
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O bairro não pode ser nulo");
+		endereco.setBairro(null);
+	
 	}
 	
 	@Test
 	public void nao_deve_aceitar_bairro_vazio(){
-		assertFalse(endereco.getBairro().isEmpty());
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O bairro não pode ser vazio");
+		endereco.setBairro("");
 	}
 		
 	@Test
 	public void nao_deve_aceitar_bairro_tamanho_minimo(){
 		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O campo bairro contem menos caracteres que o aceitavel");
+		
 		endereco.setBairro("kk");
 	}
 	@Test
-	public void nao_deve_aceitar_bairro_tamanho_maximo(){
+	public void nao_deve_aceitar_bairro_tamanho_maximo(){	
 		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("O campo bairro contem mais caracteres que o aceitavel");
+		
 		endereco.setBairro("ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
 	}
 	
