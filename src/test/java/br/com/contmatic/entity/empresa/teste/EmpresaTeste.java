@@ -1,8 +1,6 @@
 package br.com.contmatic.entity.empresa.teste;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
@@ -13,7 +11,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -144,9 +141,10 @@ public class EmpresaTeste {
 
 	@Test
 	public void nao_deve_aceitar_nome_fantasia_nulo() {
-		thrown.expect(IllegalArgumentException.class);
+		thrown.expect(NullPointerException.class);
 		thrown.expectMessage("Nome Fantasia não pode ser nulo");
 		empresa.setNomeFantasia(null);
+		
 	}
 
 	@Test
@@ -173,7 +171,7 @@ public class EmpresaTeste {
 
 	@Test
 	public void nao_deve_aceitar_nome_proprietario_nulo() {
-		thrown.expect(IllegalArgumentException.class);
+		thrown.expect(NullPointerException.class);
 		thrown.expectMessage("Nome do proprietário não pode ser nulo");
 		empresa.setNomeProprietario(null);
 	}
@@ -209,7 +207,7 @@ public class EmpresaTeste {
 
 	@Test
 	public void nao_deve_aceitar_cnpj_nulo() {
-		thrown.expect(IllegalArgumentException.class);
+		thrown.expect(NullPointerException.class);
 		thrown.expectMessage("CNPJ não pode ser nulo");
 		empresa.setCnpj(null);
 	}
@@ -245,7 +243,7 @@ public class EmpresaTeste {
 
 	@Test
 	public void nao_deve_aceitar_email_nulo() {
-		thrown.expect(IllegalArgumentException.class);
+		thrown.expect(NullPointerException.class);
 		thrown.expectMessage("Email não pode ser nulo");
 		empresa.setEmail(null);
 	}
@@ -274,14 +272,14 @@ public class EmpresaTeste {
 
 	@Test
 	public void nao_deve_aceitar_endereco_nulo() {
-		thrown.expect(IllegalArgumentException.class);
+		thrown.expect(NullPointerException.class);
 		thrown.expectMessage("Endereco não pode ser nulo");
 		empresa.setEndereco(null);
 	}
 
 	@Test
 	public void nao_deve_aceitar_data_criacao_nulo() {
-		thrown.expect(IllegalArgumentException.class);
+		thrown.expect(NullPointerException.class);
 		thrown.expectMessage("A data de criação não pode ser nula");
 		empresa.setDataCriacao(null);
 	}
@@ -294,6 +292,7 @@ public class EmpresaTeste {
 
 	}
 
+	
 	@Test
 	public void nao_deve_aceitar_data_criacao_menor_que_atual() {
 		thrown.expect(IllegalArgumentException.class);
@@ -317,7 +316,7 @@ public class EmpresaTeste {
 
 	@Test
 	public void nao_deve_aceitar_endereco_invalido() {
-		thrown.expect(IllegalArgumentException.class);
+		thrown.expect(NullPointerException.class);
 		thrown.expectMessage("É Necessário preecher todos os enderecos da empresa");
 		empresa.setEndereco(enderecoInvalido);
 	}
@@ -330,7 +329,7 @@ public class EmpresaTeste {
 
 	@Test
 	public void nao_deve_aceitar_telefone_invalido() {
-		thrown.expect(IllegalArgumentException.class);
+		thrown.expect(NullPointerException.class);
 		thrown.expectMessage("É Necessário preecher todos os telefones da empresa");
 		empresa.setTelefone(telefoneInvalido);
 	}
@@ -341,7 +340,7 @@ public class EmpresaTeste {
 		assertEquals(telefone,empresa.getTelefone());
 	}
 
-	@Ignore
+	
 	@Test
 	public void teste_to_string() {
 		System.out.println(empresa);

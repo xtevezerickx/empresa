@@ -1,5 +1,7 @@
 package br.com.contmatic.entity.empresa.teste;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
@@ -39,6 +41,7 @@ public class TelefoneTeste {
 	
 	@After
 	public void tearDown(){
+		telefone = null;
 		//System.out.println("Depois de cada teste");
 	}
 	@AfterClass
@@ -51,7 +54,7 @@ public class TelefoneTeste {
 	public void deve_aceitar_numero_telefone_valido() {
 		String numeroTelefone = "949789055";
 		telefone.setNumeroTelefone(numeroTelefone);
-		assertEquals(numeroTelefone,telefone.getNumeroTelefone());
+		assertThat(numeroTelefone, is(telefone.getNumeroTelefone()));
 	}
 
 	@Test(timeout=1000)
@@ -70,7 +73,7 @@ public class TelefoneTeste {
 
 	@Test
 	public void nao_deve_aceitar_numero_telefone_nulo() {
-		thrown.expect(IllegalArgumentException.class);
+		thrown.expect(NullPointerException.class);
 		thrown.expectMessage("O Numero do telefone nao pode ser nulo");
 		telefone.setNumeroTelefone(null);
 		}
@@ -98,7 +101,7 @@ public class TelefoneTeste {
 
 	@Test
 	public void nao_deve_aceitar_ddd_nulo() {
-		thrown.expect(IllegalArgumentException.class);
+		thrown.expect(NullPointerException.class);
 		thrown.expectMessage("DDD não pode ser nulo");
 		telefone.setDdd(null);
 	}
@@ -155,7 +158,7 @@ public class TelefoneTeste {
 
 	@Test
 	public void nao_deve_aceitar_tipo_telefone_nulo() {
-		thrown.expect(IllegalArgumentException.class);
+		thrown.expect(NullPointerException.class);
 		thrown.expectMessage("Tipo de telefone não pode ser nulo");
 		telefone.setTipoTelefone(null);
 	
