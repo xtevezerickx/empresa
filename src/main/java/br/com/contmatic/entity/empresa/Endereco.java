@@ -7,8 +7,8 @@ import static java.lang.Character.isLetter;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.StandardToStringStyle;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class Endereco {
 	/**
@@ -690,11 +690,7 @@ public class Endereco {
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((cep == null) ? 0 : cep.hashCode());
-		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
-		return result;
+	    return new HashCodeBuilder().append(this.cep).append(this.numero).build();	    		
 	}
 
 	/* (non-Javadoc)
@@ -702,51 +698,25 @@ public class Endereco {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
 		Endereco other = (Endereco) obj;
-		if (cep == null) {
-			if (other.cep != null)
-				return false;
-		} else if (!cep.equals(other.cep))
-			return false;
-		if (numero == null) {
-			if (other.numero != null)
-				return false;
-		} else if (!numero.equals(other.numero))
-			return false;
-		return true;
+		return new EqualsBuilder().append(this.cep, other.cep).append(this.numero, other.numero).build();
 	}
 
 	@Override
 	public String toString() {
-		return "[\n nomeLogradouro= " + nomeLogradouro
-				+ "\n tipoLogradouro= " + tipoLogradouro
-				+ "\n numero= "	+ numero
-				+ "\n cep= " + cep
-				+ "\n cidade= " + cidade
-				+ "\n estado= " + estado
-				+ "\n bairro= " + bairro + "] \n";
+	    return new ToStringBuilder(this,StandardToStringStyle.MULTI_LINE_STYLE)
+	            .append(this.nomeLogradouro!=null?"Nome Logradouro "+this.nomeLogradouro:null)
+	            .append(this.tipoLogradouro!=null?"Tipo Logradouro "+this.tipoLogradouro:null)
+	            .append(this.numero!=null?"Numero "+this.numero:null)
+	            .append(this.cep!=null?"CEP "+this.cep:null)
+	            .append(this.cidade!=null?"Cidade "+this.cidade:null)
+	            .append(this.estado!=null?"Estado "+this.estado:null)
+	            .append(this.bairro!=null?"Bairro "+this.bairro:null)
+	            .toString();
 	}
 	
 	
 	
 }
-
-//	/* (non-Javadoc)
-//	 * @see java.lang.Object#toString()
-//	 */
-//	@Override
-//	public String toString() {
-//		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-//				.append("Nome Logradouro: " + this.nomeLogradouro).append("Tipo do Logradouro: " + this.tipoLogradouro)
-//				.append("Numero: " + this.numero).append("CEP: " + this.cep).append("Cidade" + this.cidade)
-//				.append("Estado: " + this.estado).append("Bairro: " + this.bairro).build();
-//
-//	}
 
 

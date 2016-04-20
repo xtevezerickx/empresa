@@ -15,6 +15,9 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import br.com.contmatic.entity.empresa.Telefone;
+import br.com.contmatic.entity.empresa.teste.templates.TelefoneTemplate;
+import br.com.six2six.fixturefactory.Fixture;
+import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 
 @FixMethodOrder(NAME_ASCENDING)
 public class TelefoneTeste {
@@ -25,6 +28,7 @@ public class TelefoneTeste {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() {
+	    
 		System.out.println("Metodos sendo utilizados antes de iniciar a classe Telefone Teste");
 		
 		
@@ -32,17 +36,17 @@ public class TelefoneTeste {
 	
 	@Before
 	public void setUp() {
-		telefone = new Telefone();
-		telefone.setDdd("011");
-		telefone.setNumeroTelefone("123456789");
-		telefone.setTipoTelefone("celular");
-		//System.out.println("Antes de cada teste");
-	}
+//	  	telefone = new Telefone();
+//		telefone.setDdd("011");
+//		telefone.setNumeroTelefone("123456789");
+//		telefone.setTipoTelefone("celular");
+	    FixtureFactoryLoader.loadTemplates("br.com.contmatic.entity.empresa.teste.templates");
+	    telefone =  Fixture.from(Telefone.class).gimme("valido");
+		}
 	
 	@After
 	public void tearDown(){
 		telefone = null;
-		//System.out.println("Depois de cada teste");
 	}
 	@AfterClass
 	public static void tearDownAfterClass() {

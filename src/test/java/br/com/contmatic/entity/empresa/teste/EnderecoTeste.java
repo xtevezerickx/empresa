@@ -13,6 +13,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import br.com.contmatic.entity.empresa.Endereco;
+import br.com.six2six.fixturefactory.Fixture;
+import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 
 @FixMethodOrder(NAME_ASCENDING)
 public class EnderecoTeste {
@@ -36,14 +38,8 @@ public class EnderecoTeste {
 	}
 	@Before
 	public void setUp(){
-		endereco =new Endereco();
-		endereco.setBairro("bairro de teste");
-		endereco.setCep("03378010");
-		endereco.setCidade("Sao paulo");
-		endereco.setEstado("Sao Paulo");
-		endereco.setNomeLogradouro("rua tal tal tal ");
-		endereco.setNumero("1124");
-		endereco.setTipoLogradouro("rua");
+	    FixtureFactoryLoader.loadTemplates("br.com.contmatic.entity.empresa.teste.templates");
+	    endereco = Fixture.from(Endereco.class).gimme("valido");
 	}
 	
 	@Test (timeout=1000)

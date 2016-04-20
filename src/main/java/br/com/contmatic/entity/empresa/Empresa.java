@@ -8,6 +8,18 @@ import static java.lang.Character.isLetter;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Set;
+
+import javax.swing.text.Style;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.StandardToStringStyle;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public class Empresa {
 	/**
@@ -54,19 +66,19 @@ public class Empresa {
 	/**
 	 * Recebe os numeros de telefone da empresa
 	 */
-	private Telefone[] telefone;
+	private Set<Telefone> telefone;
 	/**
 	 * Recebe os enderecos da empresa
 	 */
-	private Endereco[] endereco;
+	private Set<Endereco> endereco;
 	/**
 	 * Recebe a data de criação da empresa
 	 */
-	private Date dataCriacao;
+	private DateTime dataCriacao;
 	/**
 	 * Recebe a data de alteração da empresa
 	 */
-	private Date dataAlteracao;
+	private DateTime dataAlteracao;
 
 	/**
 	 * Retorna o nome fantasia do objeto
@@ -117,7 +129,7 @@ public class Empresa {
 	 * Retorna um array de telefones do objeto
 	 * @return Telefone[]
 	 */
-	public Telefone[] getTelefone() {
+	public Set<Telefone> getTelefone() {
 		return telefone;
 	}
 
@@ -130,8 +142,8 @@ public class Empresa {
 	 * @throws NullArgumentException , caso um dos telefones da empresa seja nulo
 	 * 
 	 */
-	public void setTelefone(Telefone[] telefone) {
-		this.validateEmpresaPrecisaDeDoisTelefones(telefone);
+	public void setTelefone(Set<Telefone> telefone) {
+		//this.validateEmpresaPrecisaDeDoisTelefones(telefone);
 		this.telefone = telefone;
 	}
 
@@ -139,7 +151,7 @@ public class Empresa {
 	 * Retorna um array de endereços do objeto
 	 * @return Endereco[]
 	 */
-	public Endereco[] getEndereco() {
+	public Set<Endereco> getEndereco() {
 		return endereco;
 	}
 
@@ -152,9 +164,9 @@ public class Empresa {
 	 * @throws NullArgumentException , caso um dos enderecos da empresa seja nulo
 	 * 
 	 */
-	public void setEndereco(Endereco[] endereco) {
+	public void setEndereco(Set<Endereco> endereco) {
 		this.validateEnderecoNotNull(endereco);
-		this.validateEmpresaPrecisaDeDoisEnderecos(endereco);
+		//this.validateEmpresaPrecisaDeDoisEnderecos(endereco);
 		this.endereco = endereco;
 	}
 
@@ -208,7 +220,7 @@ public class Empresa {
 	 * Retorna a data de criação  do objeto (empresa)
 	 * @return Date
 	 */
-	public Date getDataCriacao() {
+	public DateTime getDataCriacao() {
 		return dataCriacao;
 	}
 
@@ -222,7 +234,7 @@ public class Empresa {
 	 * @throws NullArgumentException , caso a data de criacao seja nulo
 	 * 
 	 */
-	public void setDataCriacao(Date dataCriacao) {
+	public void setDataCriacao(DateTime dataCriacao) {
 		this.validateDataCriacaoNotNull(dataCriacao);
 		this.validateDataCriacaoMaiorQueAtual(dataCriacao);
 		this.validateDataCriacaoMenorQueAtual(dataCriacao);
@@ -233,7 +245,7 @@ public class Empresa {
 	 * Retorna a data de alteração do objeto(empresa)
 	 * @return
 	 */
-	public Date getDataAlteracao() {
+	public DateTime getDataAlteracao() {
 		return dataAlteracao;
 	}
 
@@ -246,7 +258,7 @@ public class Empresa {
 	 * @throws IllegalArgumentException , caso a data de alteração seja menor que a data de criacao
 	 * 
 	 */
-	public void setDataAlteracao(Date dataAlteracao) {
+	public void setDataAlteracao(DateTime dataAlteracao) {
 		this.validateDataAlteracaoMaiorQueDataCriacao(dataAlteracao);
 		this.dataAlteracao = dataAlteracao;
 	}
@@ -462,18 +474,23 @@ public class Empresa {
 	 * @param endereco
 	 * @throws NullPointerException
 	 */
-	private void validateEmpresaPrecisaDeDoisEnderecos(Endereco[] endereco) {
-		for (int i = 0; i < endereco.length; i++) {
-			checkNotNull(endereco[i],"É Necessário preecher todos os enderecos da empresa");
-		}
-	}
+	//TODO
+//	private void validateEmpresaPrecisaDeDoisEnderecos(Set<Endereco> endereco) {
+//	    Iterator<Endereco> it = endereco.iterator();
+//	    while (it.hasNext()){
+//	        
+//	    }
+//		for (int i = 0; i < endereco.length; i++) {
+//			checkNotNull(endereco[i],"É Necessário preecher todos os enderecos da empresa");
+//		}
+//	}
 
 	/**
 	 * Valida se o parametro recebido endereco está nulo
 	 * @param endereco
 	 * @throws NullPointerException
 	 */
-	private void validateEnderecoNotNull(Endereco[] endereco) {
+	private void validateEnderecoNotNull(Set<Endereco> endereco) {
 		checkNotNull(endereco,"Endereco não pode ser nulo");
 	}
 	/**
@@ -481,17 +498,18 @@ public class Empresa {
 	 * @param nomeProprietario
 	 * @throws IllegalArgumentException
 	 */
-	private void validateEmpresaPrecisaDeDoisTelefones(Telefone[] telefone) {
-		for (int i = 0; i < telefone.length; i++) {
-			checkNotNull(telefone[i],"É Necessário preecher todos os telefones da empresa");
-		}
-	}
+	//TODO
+//	private void validateEmpresaPrecisaDeDoisTelefones(Set<Telefone> telefone) {
+//		for (int i = 0; i < telefone.length; i++) {
+//			checkNotNull(telefone[i],"É Necessário preecher todos os telefones da empresa");
+//		}
+//	}
 	/**
 	 * Valida se o parametro recebido data de criação está nulo
 	 * @param dataCriação
 	 * @throws NullPointerException
 	 */
-	private void validateDataCriacaoNotNull(Date dataCriacao) {
+	private void validateDataCriacaoNotNull(DateTime dataCriacao) {
 		checkNotNull(dataCriacao,"A data de criação não pode ser nula");
 	}
 	/**
@@ -499,24 +517,24 @@ public class Empresa {
 	 * @param nomeProprietario
 	 * @throws IllegalArgumentException
 	 */
-	private void validateDataCriacaoMaiorQueAtual(Date dataCriacao) {
-		checkArgument(!dataCriacao.after(new Date()),"A data de criação não pode ser maior que a atual");
+	private void validateDataCriacaoMaiorQueAtual(DateTime dataCriacao) {
+		checkArgument(!dataCriacao.isAfterNow(),"A data de criação não pode ser maior que a atual");
 	}
 	/**
 	 * Valida se o parametro recebido data de criação é menor que a data atual
 	 * @param nomeProprietario
 	 * @throws IllegalArgumentException
 	 */
-	private void validateDataCriacaoMenorQueAtual(Date dataCriacao) {
-		checkArgument(!dataCriacao.before(new Date()),"A data de criação não pode ser menor que a atual");
+	private void validateDataCriacaoMenorQueAtual(DateTime dataCriacao) {
+		checkArgument(dataCriacao.isBeforeNow(),"A data de criação não pode ser menor que a atual");
 	}
 	/**
 	 * Valida se o parametro recebido data de alteração é maior que a data de criação
 	 * @param nomeProprietario
 	 * @throws IllegalArgumentException
 	 */
-	private void validateDataAlteracaoMaiorQueDataCriacao(Date dataAlteracao) {
-		checkArgument(!dataAlteracao.before(this.getDataCriacao()),"A data da alteração não pode ser antes que a data de criação");
+	private void validateDataAlteracaoMaiorQueDataCriacao(DateTime dataAlteracao) {
+		checkArgument(!dataAlteracao.isBefore(this.getDataCriacao()),"A data da alteração não pode ser antes que a data de criação");
 	}
 
 	
@@ -525,10 +543,7 @@ public class Empresa {
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((cnpj == null) ? 0 : cnpj.hashCode());
-		return result;
+		return new HashCodeBuilder().append(cnpj).build();
 	}
 
 	/* (non-Javadoc)
@@ -536,37 +551,33 @@ public class Empresa {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
 		Empresa other = (Empresa) obj;
-		if (cnpj == null) {
-			if (other.cnpj != null)
-				return false;
-		} else if (!cnpj.equals(other.cnpj))
-			return false;
-		return true;
+		return new EqualsBuilder().append(this.cnpj,other.cnpj).build();
 	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
-	@Override
-	public String toString() {
-		this.validateDataCriacaoNotNull(dataCriacao);
-		SimpleDateFormat dtf = new SimpleDateFormat("dd/MM/yyyy");
-		return "\n Empresa [nomeFantasia= " + nomeFantasia
-				+ "\n nomeProprietario= " + nomeProprietario
-				+ "\n cnpj= " + cnpj
-				+ "\n email= " + email
-				+ "\n telefone= " + Arrays.toString(telefone)
-				+ "\n endereco= " + Arrays.toString(endereco)
-				+ (dataCriacao != null ? "\n dataCriacao= " + dtf.format(dataCriacao)+"\n":"\n dataCriacao= "+null)
-				+ (dataAlteracao!= null? "\n dataAlteracao= " + dtf.format(dataAlteracao):"\n dataAlteracao= "+null) + "] \n";
-	}
+	 @Override
+  public String toString() {
+      this.validateDataCriacaoNotNull(dataCriacao);
+      DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/YYYY");
+      dataCriacao = new DateTime();
+      String dataCriacaoString = dtf.print(dataCriacao);
+      dataAlteracao = new DateTime();
+      String dataAlteracaoString = dtf.print(dataAlteracao);
+      return new ToStringBuilder(this, StandardToStringStyle.MULTI_LINE_STYLE)
+              .append(this.nomeFantasia != null ? "Nome Fantasia: " + this.nomeFantasia : null)
+              .append(this.nomeProprietario != null ? "Nome do Propietário: " + this.nomeProprietario : null)
+              .append(this.cnpj != null ? "CNPJ: " + this.cnpj : null)
+              .append(this.email != null ? "Email: " + this.email : null)
+              .append(this.dataCriacao != null ? "Data de criação: " +  dataCriacaoString : null)
+              .append(this.dataAlteracao != null ? "Data da alteração: " + dataAlteracaoString : null)
+              .append(telefone)
+              .append(endereco)
+              .build();
+
+  }
 
 
 
