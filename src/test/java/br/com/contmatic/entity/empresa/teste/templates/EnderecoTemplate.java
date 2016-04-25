@@ -6,7 +6,8 @@ import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
 
 public class EnderecoTemplate implements TemplateLoader {
-
+    
+    
     public void load() {
         Fixture.of(Endereco.class).addTemplate("valido", new Rule(){{
             add("bairro",random("bairro um","bairro dois","bairro tres"));

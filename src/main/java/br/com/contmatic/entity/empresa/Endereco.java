@@ -5,10 +5,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.Character.isDigit;
 import static java.lang.Character.isLetter;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.StandardToStringStyle;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 public class Endereco {
 	/**
@@ -58,30 +67,62 @@ public class Endereco {
 	/**
 	 * Recebe o nome do logradouro
 	 */
+	@NotNull(message=" É necessário preencher o campo nome logradouro")
+	@NotBlank(message="Nome Logradouro não pode estar vazio")
+	@Max(value=TAMANHO_MAX_NOME_LOGRADOURO,message="O campo nome logradouro esta maior que o aceitavel")
+	@Min(value=TAMANHO_MIN_NOME_LOGRADOURO,message="O campo nome logradouro esta menor que o aceitavel")
+	@Pattern(regexp = "\\D{4-30}")
 	private String nomeLogradouro;
 	/**
 	 * Recebe o tipo de logradouro
 	 */
+	@NotNull(message="É necessário preencher o campo tipo logradouro")
+	@NotBlank(message="Tipo do logradouro não pode ser vazio")
+	@Max(value=TAMANHO_MAX_TIPO_LOGRADOURO,message="O tipo de logradouro esta maior que o aceitavel")
+	@Min(value=TAMANHO_MIN_TIPO_LOGRADOURO,message="O tipo de logradouro esta menor que o aceitavel")
+	@Pattern(regexp = "\\D{2-15}")
+	
 	private String tipoLogradouro;
 	/**
 	 * Recebe o numero
 	 */
+	@NotNull(message="É necessário preencher o campo numero")
+	@Size(max=TAMANHO_NUMERO,message="O campo numero está com tamanha incorreto")
+	@NotBlank(message="O numero não pode ser vazio")
+	@Pattern(regexp = "\\d{1-10}")
 	private String numero;
 	/**
 	 * Recebe o cep
 	 */
+	@NotNull(message="É necessário preencher o campo CEP")
+	@Length(max=TAMANHO_CEP,message="O campo CEP está com o tamanho incorreto")
+	@NotBlank(message="O campo CEP não deve ser vazio")
+	@Pattern(regexp = "\\d{8}")
 	private String cep;
 	/**
 	 * Recebe a cidade
 	 */
+	@NotNull(message="É necessário preencher o campo cidade")
+	@NotBlank(message="O campo cidade não pode ser vazio")
+	@Min(value = TAMANHO_MIN_CIDADE,message="O campo cidade contem menos caracteres que o aceitavel")
+	@Max(value=TAMANHO_MAX_CIDADE,message="O campo cidade contem mais caracteres que o aceitavel")
+	@Pattern(regexp = "\\D{3-30}")
 	private String cidade;
 	/**
 	 * Recebe o estado
 	 */
+	@NotNull(message="É necessário preencher o campo estado")
+	@Size(max=TAMANHO_MAX_ESTADO,message="O campo estado está com tamanho incorreto")
+	@NotEmpty(message="O campo estado não pode ser vazio")
+	@Pattern(regexp = "\\D{3-15}")
 	private String estado;
 	/**
 	 * Recebe o bairro
 	 */
+	@NotNull(message="É necessário preencher o campo bairro")
+	@Size(min=TAMANHO_MIN_BAIRRO,max=TAMANHO_MAX_BAIRRO,message="O campo bairro está com tamanho incorreto")
+	@NotBlank(message="O campo bairro não pode ser vazio")
+	@Pattern(regexp="\\D{4-25}")
 	private String bairro;
 
 	/**
@@ -561,8 +602,7 @@ public class Endereco {
 	 * @throws IllegalArgumentException
 	 */
 	private void validateCidadeTamanhoMinimo(String cidade) {
-		checkArgument(!(cidade.length() < TAMANHO_MIN_CIDADE),
-				"O campo cidade contem menos caracteres que o aceitavel");
+		checkArgument(!(cidade.length() < TAMANHO_MIN_CIDADE),"O campo cidade contem menos caracteres que o aceitavel");
 	}
 
 	/**

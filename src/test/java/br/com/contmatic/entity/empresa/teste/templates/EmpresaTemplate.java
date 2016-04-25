@@ -1,20 +1,34 @@
 package br.com.contmatic.entity.empresa.teste.templates;
 
+import org.joda.time.DateTime;
+
 import br.com.contmatic.entity.empresa.Empresa;
+import br.com.contmatic.entity.empresa.Endereco;
 import br.com.contmatic.entity.empresa.Telefone;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
 
 public class EmpresaTemplate implements TemplateLoader{
-
+ 
     public void load() {
+   
         Fixture.of(Empresa.class).addTemplate("valido", new Rule(){{
-            add("ddd",random("011","015","056","018"));
-            add("numeroTelefone",random("123456789","987654321","654789123"));
-            add("tipoTelefone",random("ceular","comercial","filial"));
+            add("cnpj",random("12345678910124","55555555555555","33333333333333"));
+            add("email",random("${cnpj}.gmail.com","${cnpj}.hotmail.com"));
+            add("nomeFantasia",random("empresa 1","empresa 2","empresa 3"));
+            add("nomeProprietario",random("Erick","Maia","Silva"));
+            add("dataCriacao",new DateTime(2016,04,25,0,0,0));
+            add("dataAlteracao",new DateTime(2016,04,25,0,0,0).plusDays(2));
+            add("telefone", has(2).of(Telefone.class,"valido"));
+            add("endereco",has(2).of(Endereco.class,"valido"));
         }});
-
+        Fixture.of(Empresa.class).addTemplate("invalido", new Rule(){{
+            add("cnpj",random("11","5gdf5","333333333f3333"));
+            add("email",random("1",""));
+            add("nomeFantasia",random("ff",""));
+            add("nomeProprietario",random("Erick","Maia","Silva"));
+        }});
         
     }
 

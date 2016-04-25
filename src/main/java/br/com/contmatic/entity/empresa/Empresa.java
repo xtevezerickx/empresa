@@ -5,18 +5,25 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.Character.isDigit;
 import static java.lang.Character.isLetter;
 
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.Set;
 
-import javax.swing.text.Style;
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
+import org.apache.commons.lang.NullArgumentException;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.StandardToStringStyle;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.br.CNPJ;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -50,30 +57,53 @@ public class Empresa {
 	 * Constante para tamanho maximo do email
 	 */
 	private static final int TAMANHO_MAX_EMAIL = 30;
+	
 	/**
 	 * Recebe o nome fantasia
 	 */
+	
+	@NotNull(message="É necessário preencher o nome fantasia")
+	@NotBlank(message="Nome Fantasia não pode estar vazio" )	
+	@Max(value=TAMANHO_MAX_NOME_FANTASIA,message="O Tamanho do nome fantasia esta maior que o aceitavel")
+	@Min(value=TAMANHO_MIN_NOME_FANTASIA,message="O Tamanho do nome fantasia esta menor que o aceitavel")
+	@Pattern(regexp = "\\D{8-30}")  
 	private String nomeFantasia;
+	
 	/**
 	 * Recebe o nome do proprietario
 	 */
+	
+	@NotNull(message="É necessário preencher o nome do proprietário")
 	private String nomeProprietario;
 	/**
 	 * Recebe o cnpj da empresa
 	 */
-	private String cnpj;
+	@CNPJ
+	@NotNull(message= "CNPJ deve ser preenchido")
+	@NotBlank(message="CNPJ não pode estar vazio")
+	@Length(max=TAMANHO_CNPJ,message="Tamanho do CNPJ incorrreto")
+    private String cnpj;
+		
+	@Email
+	@NotNull(message="É necessário preencher o campo Email")
+	@NotBlank(message="Email não pode ser vazio")
+    @Size(min=TAMANHO_MIN_EMAIL,max=TAMANHO_MAX_EMAIL,message="Tamanho do email incorreto")
 	private String email;
 	/**
 	 * Recebe os numeros de telefone da empresa
 	 */
+	
+	@NotEmpty
 	private Set<Telefone> telefone;
 	/**
 	 * Recebe os enderecos da empresa
 	 */
+	@NotEmpty
 	private Set<Endereco> endereco;
 	/**
 	 * Recebe a data de criação da empresa
 	 */
+	@NotNull(message="Data de criacao deve ser preenchida")
 	private DateTime dataCriacao;
 	/**
 	 * Recebe a data de alteração da empresa
@@ -98,6 +128,7 @@ public class Empresa {
 	 * @throws NullArgumentException , caso o nome fantasia seja nulo
 	 * 
 	 */
+	
 	public void setNomeFantasia(String nomeFantasia) {
 		this.validateNomeFantasiaAll(nomeFantasia);
 		this.nomeFantasia = nomeFantasia;
@@ -164,9 +195,10 @@ public class Empresa {
 	 * @throws NullArgumentException , caso um dos enderecos da empresa seja nulo
 	 * 
 	 */
+	@NotNull(message="É necessário preencher o endereço")
 	public void setEndereco(Set<Endereco> endereco) {
 		this.validateEnderecoNotNull(endereco);
-		//this.validateEmpresaPrecisaDeDoisEnderecos(endereco);
+		this.validateEmpresaPrecisaDeDoisEnderecos(endereco);
 		this.endereco = endereco;
 	}
 
@@ -188,6 +220,9 @@ public class Empresa {
 	 * @throws NullArgumentException , caso o email seja nulo
 	 * 
 	 */
+	
+	
+	
 	public void setEmail(String email) {
 		this.validateEmailAll(email);
 		this.email = email;
@@ -197,6 +232,8 @@ public class Empresa {
 	 * Retorna o CNPJ do objeto
 	 * @return String
 	 */
+	
+	
 	public String getCnpj() {
 		return cnpj;
 	}
@@ -211,6 +248,7 @@ public class Empresa {
 	 * @throws NullArgumentException , caso o CNPJ seja nulo
 	 * 
 	 */
+	
 	public void setCnpj(String cnpj) {
 		this.validateCNPJAll(cnpj);
 		this.cnpj = cnpj;
@@ -258,6 +296,7 @@ public class Empresa {
 	 * @throws IllegalArgumentException , caso a data de alteração seja menor que a data de criacao
 	 * 
 	 */
+	
 	public void setDataAlteracao(DateTime dataAlteracao) {
 		this.validateDataAlteracaoMaiorQueDataCriacao(dataAlteracao);
 		this.dataAlteracao = dataAlteracao;
@@ -475,15 +514,9 @@ public class Empresa {
 	 * @throws NullPointerException
 	 */
 	//TODO
-//	private void validateEmpresaPrecisaDeDoisEnderecos(Set<Endereco> endereco) {
-//	    Iterator<Endereco> it = endereco.iterator();
-//	    while (it.hasNext()){
-//	        
-//	    }
-//		for (int i = 0; i < endereco.length; i++) {
-//			checkNotNull(endereco[i],"É Necessário preecher todos os enderecos da empresa");
-//		}
-//	}
+	private void validateEmpresaPrecisaDeDoisEnderecos(Set<Endereco> endereco) {
+	    checkNotNull(endereco,"É Necessário preecher todos os enderecos da empresa");
+  	}
 
 	/**
 	 * Valida se o parametro recebido endereco está nulo
@@ -498,12 +531,13 @@ public class Empresa {
 	 * @param nomeProprietario
 	 * @throws IllegalArgumentException
 	 */
+	
 	//TODO
-//	private void validateEmpresaPrecisaDeDoisTelefones(Set<Telefone> telefone) {
-//		for (int i = 0; i < telefone.length; i++) {
-//			checkNotNull(telefone[i],"É Necessário preecher todos os telefones da empresa");
-//		}
-//	}
+	private void validateEmpresaPrecisaDeDoisTelefones(Telefone[] telefone) {
+		for (int i = 0; i < telefone.length; i++) {
+			checkNotNull(telefone[i],"É Necessário preecher todos os telefones da empresa");
+		}
+	}
 	/**
 	 * Valida se o parametro recebido data de criação está nulo
 	 * @param dataCriação

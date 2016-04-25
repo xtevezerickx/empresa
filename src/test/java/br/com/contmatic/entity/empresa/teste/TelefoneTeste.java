@@ -2,9 +2,13 @@ package br.com.contmatic.entity.empresa.teste;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
+import org.hamcrest.core.IsNull;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -15,9 +19,9 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import br.com.contmatic.entity.empresa.Telefone;
-import br.com.contmatic.entity.empresa.teste.templates.TelefoneTemplate;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
+import junit.framework.Assert;
 
 @FixMethodOrder(NAME_ASCENDING)
 public class TelefoneTeste {
@@ -40,9 +44,11 @@ public class TelefoneTeste {
 //		telefone.setDdd("011");
 //		telefone.setNumeroTelefone("123456789");
 //		telefone.setTipoTelefone("celular");
+	  
 	    FixtureFactoryLoader.loadTemplates("br.com.contmatic.entity.empresa.teste.templates");
 	    telefone =  Fixture.from(Telefone.class).gimme("valido");
 		}
+	
 	
 	@After
 	public void tearDown(){
@@ -56,7 +62,7 @@ public class TelefoneTeste {
 
 	@Test (timeout=1000)
 	public void deve_aceitar_numero_telefone_valido() {
-		String numeroTelefone = "949789055";
+		String numeroTelefone = "94978905";
 		telefone.setNumeroTelefone(numeroTelefone);
 		assertThat(numeroTelefone, is(telefone.getNumeroTelefone()));
 	}
@@ -75,6 +81,10 @@ public class TelefoneTeste {
 		assertEquals(tipoTelefone,telefone.getTipoTelefone());
 	}
 
+	@Test
+	public void to_string(){
+	    System.out.println(telefone);
+	}
 	@Test
 	public void nao_deve_aceitar_numero_telefone_nulo() {
 		thrown.expect(NullPointerException.class);
@@ -162,10 +172,10 @@ public class TelefoneTeste {
 
 	@Test
 	public void nao_deve_aceitar_tipo_telefone_nulo() {
-		thrown.expect(NullPointerException.class);
+	    thrown.expect(NullPointerException.class);
 		thrown.expectMessage("Tipo de telefone não pode ser nulo");
 		telefone.setTipoTelefone(null);
-	
+		
 	}
 
 }

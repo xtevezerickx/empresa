@@ -5,42 +5,56 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.Character.isDigit;
 import static java.lang.Character.isLetter;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.StandardToStringStyle;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
+
+import br.com.contmatic.entity.empresa.constantes.TelefoneType;
 
 public class Telefone {
 
+    private static final int TAMANHO_MAX_TIPO_TELEFONE=15;
+    private static final int TAMANHO_DDD=3;
+    private static final int TAMANHO_MIN_TIPO_TELEFONE=4;
     /**
      * Recebe o numero de telefone
      */
+    
+    @NotNull(message="É necessário preencher o campo numero de telefone")
+    @NotBlank(message="Campo numero telefone não deve ser vazio")
+    @Range(min=8,max=9)
+    @Pattern(regexp="\\d{8,9}")
     private String numeroTelefone;
     /**
      * Recebe o numero de DDD
      */
+    
+    @NotNull(message="É necessário preencher o campo DDD")
+    @Length(max=TAMANHO_DDD)
+    @NotEmpty(message="Campo DDD não pode ser vazio")
+    @Pattern(regexp="\\d{3}")
     private String ddd;
+    
     /**
      * Recebe o tipo de telefone, exemplo: Comercial, celular, casa, etc
      */
+    
+    
+    @NotNull(message="É necessário preencher o campo tipo de telefone")
+    @NotBlank(message="Tipo de telefone não pode ser vazio")
+    @Size(min=TAMANHO_MIN_TIPO_TELEFONE,max=TAMANHO_MAX_TIPO_TELEFONE,message="O campo tipo de telefone está com tamanho incorreto")
+    @Pattern(regexp="\\D{4-15}")
     private String tipoTelefone;
-    /**
-     * Constante para o tamanho do numero de telefone
-     */
-    private static final int TAMANHO_TELEFONE = 9;
-    /**
-     * Contante para o tamanho do tipo de telefone
-     */
-    private static final int TAMANHO_TIPO_TELEFONE = 15;
-    /**
-     * Constante para o tamanho do DDD
-     */
-    private static final int TAMANHO_DDD = 3;
-    /**
-     * Constante para o tamanho minimo do tipo de telefone
-     */
-    private static final int TAMANHO_MIN_TIPO_TELEFONE = 4;
-
+    
     /**
      * Retorna o numero de telefone do objeto
      * 
@@ -55,8 +69,8 @@ public class Telefone {
      * lançado uma mensagem correpondente ao erro e o parametro não é inserido na variavel.
      * 
      * @param numeroTelefone
-     * @throws IllegalArgumentException , caso o numero de telefone contenha caracter, seja vazio ou tamanho incorreto
-     * @throws NullArgumentException , caso o numero de telefone seja nulo
+     * @throws IllegalArgumentException  caso o numero de telefone contenha caracter, seja vazio ou tamanho incorreto
+     * @throws NullArgumentException  caso o numero de telefone seja nulo
      * 
      */
     public void setNumeroTelefone(String numeroTelefone) {
@@ -104,6 +118,7 @@ public class Telefone {
      * @throws IllegalArgumentException , caso o tipo de telefone contenha numeros,seja vazio ou tamanho incorreto
      * @throws NullArgumentException , caso o tipo de telefone seja nulo
      */
+     
     public void setTipoTelefone(String tipoTelefone) {
         this.validateTipoTelefoneAll(tipoTelefone);
         this.tipoTelefone = tipoTelefone;
@@ -126,7 +141,7 @@ public class Telefone {
      * @throws IllegalArgumentException
      */
     private void validateNumeroTelefoneTamanho(String numeroTelefone) {
-        checkArgument(!(numeroTelefone.length() != TAMANHO_TELEFONE), "O Tamanho do telefone esta incorreto");
+        checkArgument(!(numeroTelefone.length() != TelefoneType.FIXO.getTamanho()), "O Tamanho do telefone esta incorreto");
     }
 
     /**
@@ -251,7 +266,7 @@ public class Telefone {
      * @throws IllegalArgumentException
      */
     private void validateTipoTelefoneTamanhoMaximo(String tipoTelefone) {
-        checkArgument(!(tipoTelefone.length() > TAMANHO_TIPO_TELEFONE), "O tamanho do tipo de telefone não pode ser maior que o tamanho aceitavel");
+        checkArgument(!(tipoTelefone.length() > TAMANHO_MAX_TIPO_TELEFONE), "O tamanho do tipo de telefone não pode ser maior que o tamanho aceitavel");
     }
 
     /**
