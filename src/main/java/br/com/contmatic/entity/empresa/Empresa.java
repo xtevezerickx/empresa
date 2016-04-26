@@ -105,7 +105,7 @@ public class Empresa {
 	 * Recebe os enderecos da empresa
 	 */
 
-	@NotEmpty
+	
 	@NotNull(message="Endereço não pode ser vazio")
 	private Set<Endereco> endereco;
 	
@@ -340,9 +340,7 @@ public class Empresa {
 	 * @param endereco
 	 * @throws NullPointerException
 	 */
-	private void validateEnderecoNotNull(Endereco endereco) {
-		checkNotNull(endereco,"Endereco não pode ser nulo");
-	}
+	
 	/**
 	 * Valida se o parametro recebido telefone está nulo
 	 * @param nomeProprietario

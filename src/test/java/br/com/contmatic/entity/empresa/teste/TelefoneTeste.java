@@ -7,11 +7,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
-import javax.validation.constraints.AssertTrue;
-
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -20,7 +17,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import br.com.contmatic.entity.empresa.Telefone;
-import br.com.contmatic.entity.empresa.util.ValidationUtil;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 
@@ -137,7 +133,7 @@ public class TelefoneTeste {
 	@Test
 	public void nao_deve_aceitar_tipo_telefone_vazio() {
 	    telefone.setTipoTelefone("");
-	    assertTrue(hasErrors(telefone, "É necessário preencher o campo tipo de telefone"));
+	    assertTrue(hasErrors(telefone, "Tipo de telefone não pode ser vazio"));
 	}
 
 	@Test
@@ -148,24 +144,20 @@ public class TelefoneTeste {
 
 	@Test 
 	public void nao_deve_aceitar_tipo_telefone_tamanho_maximo() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("O tamanho do tipo de telefone não pode ser maior que o tamanho aceitavel");
-		telefone.setTipoTelefone("ffffffffffffffffffffffffffffffffffffff");
+	    telefone.setTipoTelefone("ffffffffffffffffffffffffffffffffffffff");
+	    assertTrue(hasErrors(telefone, "O campo tipo de telefone está com tamanho incorreto"));
 	}
 
 	@Test 
 	public void nao_deve_aceitar_tipo_telefone_tamanho_minimo() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("O tamanho do tipo de telefone não pode ser menor que o tamanho aceitavel");
-		telefone.setTipoTelefone("fff");
+	    telefone.setTipoTelefone("fff");
+	    assertTrue(hasErrors(telefone, "O campo tipo de telefone está com tamanho incorreto"));
 	}
 
 	@Test
 	public void nao_deve_aceitar_tipo_telefone_nulo() {
-	    thrown.expect(NullPointerException.class);
-		thrown.expectMessage("Tipo de telefone não pode ser nulo");
-		telefone.setTipoTelefone(null);
-		
+	    telefone.setTipoTelefone(null);
+	    assertTrue(hasErrors(telefone, "É necessário preencher o campo tipo de telefone"));
 	}
 
 }

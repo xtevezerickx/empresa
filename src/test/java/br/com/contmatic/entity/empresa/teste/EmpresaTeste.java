@@ -9,6 +9,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -21,6 +24,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import br.com.contmatic.entity.empresa.Empresa;
+import br.com.contmatic.entity.empresa.Endereco;
 import br.com.contmatic.entity.empresa.Telefone;
 import br.com.contmatic.entity.empresa.util.ValidationUtil;
 import br.com.six2six.fixturefactory.Fixture;
@@ -62,7 +66,7 @@ public class EmpresaTeste {
         empresa =  Fixture.from(Empresa.class).gimme("valido");
         empresaInvalida= Fixture.from(Empresa.class).gimme("invalido");
         empresaTelefoneIgual = Fixture.from(Empresa.class).gimme("telefone_igual");
-//        empresaEnderecoIgual
+
         
     }
 
@@ -230,7 +234,7 @@ public class EmpresaTeste {
     @Test
     public void nao_deve_aceitar_data_criacao_nulo() {
         empresa.setDataCriacao(null);
-        assertTrue(hasErrors(empresa, "Data de criacao deve ser preenchida"));
+        assertTrue(hasErrors(empresa,"Data de criacao deve ser preenchida"));
     }
 
     @Ignore

@@ -67,11 +67,10 @@ public class Endereco {
 	/**
 	 * Recebe o nome do logradouro
 	 */
-	@NotNull(message=" É necessário preencher o campo nome logradouro")
+	@NotNull(message="É necessário preencher o campo nome logradouro")
 	@NotBlank(message="Nome Logradouro não pode estar vazio")
-	@Max(value=TAMANHO_MAX_NOME_LOGRADOURO,message="O campo nome logradouro esta maior que o aceitavel")
-	@Min(value=TAMANHO_MIN_NOME_LOGRADOURO,message="O campo nome logradouro esta menor que o aceitavel")
-	@Pattern(regexp = "\\D{4-30}")
+	@Length(min=TAMANHO_MIN_NOME_LOGRADOURO,max=TAMANHO_MAX_NOME_LOGRADOURO,message="campo nome logradouro está com tamanho incorreto")
+	@Pattern(regexp = "\\D{4,30}")
 	private String nomeLogradouro;
 	/**
 	 * Recebe o tipo de logradouro
@@ -80,7 +79,7 @@ public class Endereco {
 	@NotBlank(message="Tipo do logradouro não pode ser vazio")
 	@Max(value=TAMANHO_MAX_TIPO_LOGRADOURO,message="O tipo de logradouro esta maior que o aceitavel")
 	@Min(value=TAMANHO_MIN_TIPO_LOGRADOURO,message="O tipo de logradouro esta menor que o aceitavel")
-	@Pattern(regexp = "\\D{2-15}")
+	@Pattern(regexp = "\\D{2,15}")
 	
 	private String tipoLogradouro;
 	/**
@@ -89,15 +88,15 @@ public class Endereco {
 	@NotNull(message="É necessário preencher o campo numero")
 	@Size(max=TAMANHO_NUMERO,message="O campo numero está com tamanha incorreto")
 	@NotBlank(message="O numero não pode ser vazio")
-	@Pattern(regexp = "\\d{1-10}")
+	@Pattern(regexp = "\\d{1,10}")
 	private String numero;
 	/**
 	 * Recebe o cep
 	 */
 	@NotNull(message="É necessário preencher o campo CEP")
-	@Length(max=TAMANHO_CEP,message="O campo CEP está com o tamanho incorreto")
+	@Length(max=TAMANHO_CEP,min=TAMANHO_CEP,message="O campo CEP está com o tamanho incorreto")
 	@NotBlank(message="O campo CEP não deve ser vazio")
-	@Pattern(regexp = "\\d{8}")
+	@Pattern(regexp = "\\d{8}",message="O campo cep aceita apenas numeros")
 	private String cep;
 	/**
 	 * Recebe a cidade
@@ -106,7 +105,7 @@ public class Endereco {
 	@NotBlank(message="O campo cidade não pode ser vazio")
 	@Min(value = TAMANHO_MIN_CIDADE,message="O campo cidade contem menos caracteres que o aceitavel")
 	@Max(value=TAMANHO_MAX_CIDADE,message="O campo cidade contem mais caracteres que o aceitavel")
-	@Pattern(regexp = "\\D{3-30}")
+	@Pattern(regexp = "\\D{3,30}",message="O campo cidade não deve conter números")
 	private String cidade;
 	/**
 	 * Recebe o estado
@@ -114,7 +113,7 @@ public class Endereco {
 	@NotNull(message="É necessário preencher o campo estado")
 	@Size(max=TAMANHO_MAX_ESTADO,message="O campo estado está com tamanho incorreto")
 	@NotEmpty(message="O campo estado não pode ser vazio")
-	@Pattern(regexp = "\\D{3-15}")
+	@Pattern(regexp = "\\D{3,15}",message="O campo estado não pode conter números")
 	private String estado;
 	/**
 	 * Recebe o bairro
@@ -122,7 +121,7 @@ public class Endereco {
 	@NotNull(message="É necessário preencher o campo bairro")
 	@Size(min=TAMANHO_MIN_BAIRRO,max=TAMANHO_MAX_BAIRRO,message="O campo bairro está com tamanho incorreto")
 	@NotBlank(message="O campo bairro não pode ser vazio")
-	@Pattern(regexp="\\D{4-25}")
+	@Pattern(regexp="\\D{4,25}")
 	private String bairro;
 
 	/**
@@ -148,7 +147,7 @@ public class Endereco {
 	 * 
 	 */
 	public void setNomeLogradouro(String nomeLogradouro) {
-		this.validateNomeLogradouroAll(nomeLogradouro);
+		
 		this.nomeLogradouro = nomeLogradouro;
 	}
 
@@ -175,7 +174,6 @@ public class Endereco {
 	 * 
 	 */
 	public void setTipoLogradouro(String tipoLogradouro) {
-		this.validateTipoLogradouroAll(tipoLogradouro);
 		this.tipoLogradouro = tipoLogradouro;
 	}
 
@@ -203,7 +201,6 @@ public class Endereco {
 	 * 
 	 */
 	public void setNumero(String numero) {
-		this.validateNumeroAll(numero);
 		this.numero = numero;
 	}
 
@@ -230,7 +227,6 @@ public class Endereco {
 	 * 
 	 */
 	public void setCep(String cep) {
-		this.validateCepAll(cep);
 		this.cep = cep;
 	}
 
@@ -258,7 +254,6 @@ public class Endereco {
 	 * 
 	 */
 	public void setCidade(String cidade) {
-		this.validateCidadeAll(cidade);
 		this.cidade = cidade;
 	}
 
@@ -286,7 +281,6 @@ public class Endereco {
 	 * 
 	 */
 	public void setEstado(String estado) {
-		this.validateEstadoAll(estado);
 		this.estado = estado;
 	}
 
@@ -313,7 +307,6 @@ public class Endereco {
 	 * 
 	 */
 	public void setBairro(String bairro) {
-		this.validateBairroAll(bairro);
 		this.bairro = bairro;
 	}
 
