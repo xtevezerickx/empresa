@@ -1,16 +1,17 @@
 package br.com.contmatic.entity.empresa.teste;
 
+import static br.com.contmatic.entity.empresa.util.ValidationUtil.hasErrors;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
-import org.hamcrest.core.IsNull;
+import javax.validation.constraints.AssertTrue;
+
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -19,9 +20,9 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import br.com.contmatic.entity.empresa.Telefone;
+import br.com.contmatic.entity.empresa.util.ValidationUtil;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
-import junit.framework.Assert;
 
 @FixMethodOrder(NAME_ASCENDING)
 public class TelefoneTeste {
@@ -40,14 +41,11 @@ public class TelefoneTeste {
 	
 	@Before
 	public void setUp() {
-//	  	telefone = new Telefone();
-//		telefone.setDdd("011");
-//		telefone.setNumeroTelefone("123456789");
-//		telefone.setTipoTelefone("celular");
-	  
+ 
 	    FixtureFactoryLoader.loadTemplates("br.com.contmatic.entity.empresa.teste.templates");
 	    telefone =  Fixture.from(Telefone.class).gimme("valido");
-		}
+	    
+	}
 	
 	
 	@After
@@ -58,8 +56,9 @@ public class TelefoneTeste {
 	public static void tearDownAfterClass() {
 		System.out.println("Metodos executados depois da classe Telefone Teste");
 	}
-
-
+	
+	
+	
 	@Test (timeout=1000)
 	public void deve_aceitar_numero_telefone_valido() {
 		String numeroTelefone = "94978905";
@@ -81,79 +80,70 @@ public class TelefoneTeste {
 		assertEquals(tipoTelefone,telefone.getTipoTelefone());
 	}
 
+	
 	@Test
 	public void to_string(){
 	    System.out.println(telefone);
 	}
 	@Test
 	public void nao_deve_aceitar_numero_telefone_nulo() {
-		thrown.expect(NullPointerException.class);
-		thrown.expectMessage("O Numero do telefone nao pode ser nulo");
-		telefone.setNumeroTelefone(null);
-		}
+	    telefone.setNumeroTelefone(null);
+	    assertTrue(hasErrors(telefone, "É necessário preencher o campo numero de telefone"));
+	}
 	
 	@Test 
 	public void nao_deve_aceitar_numero_telefone_vazio() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("O telefone não pode esta vazio");
-		telefone.setNumeroTelefone("");
+	    telefone.setNumeroTelefone("");
+	    assertTrue(hasErrors(telefone, "Campo numero telefone não deve ser vazio"));
 	}
 
 	@Test
 	public void nao_deve_aceitar_numero_telefone_tamanho_incorreto() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("O Tamanho do telefone esta incorreto");
-		telefone.setNumeroTelefone("11111");
+	    telefone.setNumeroTelefone("11111");
+	    assertTrue(hasErrors(telefone, "numero de telefone com tamanho incorreto"));
 	}
 
 	@Test
 	public void nao_deve_aceitar_numero_telefone_com_letras() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("O telefone não pode conter letras");
-		telefone.setNumeroTelefone("fff");
+	    telefone.setNumeroTelefone("fff");
+	    assertTrue(hasErrors(telefone, "O numero de telefone apenas deve contem números"));
 	}
 
 	@Test
 	public void nao_deve_aceitar_ddd_nulo() {
-		thrown.expect(NullPointerException.class);
-		thrown.expectMessage("DDD não pode ser nulo");
-		telefone.setDdd(null);
+	    telefone.setDdd(null);
+	    assertTrue(hasErrors(telefone, "É necessário preencher o campo DDD"));
 	}
 
 	@Test
 	public void nao_deve_aceitar_ddd_vazio() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("DDD não pode ser vazio");
-		telefone.setDdd("");
+	    telefone.setDdd("");
+	    assertTrue(hasErrors(telefone, "Campo DDD não pode ser vazio"));		
 	}
 
 	@Test
 	public void nao_deve_aceitar_ddd_com_tamanho_errado() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("DDD com tamanho incorreto");
-		telefone.setDdd("44444");
-	}
-
-	@Test
-	public void nao_deve_aceitar_ddd_com_letras() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("DDD não pode conter caracteres");
-		telefone.setDdd("01d");
-	}
-
-	@Test
-	public void nao_deve_aceitar_tipo_telefone_vazio() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Tipo de telefone não pode ser vazio");
-		telefone.setTipoTelefone("");
+	    telefone.setDdd("44444");
+	    assertTrue(hasErrors(telefone, "DDD com tamanho incorreto"));
 		
 	}
 
 	@Test
+	public void nao_deve_aceitar_ddd_com_letras() {
+	    telefone.setDdd("01d");
+	    assertTrue(hasErrors(telefone, "DDD não pode conter letras"));
+	}
+
+	@Test
+	public void nao_deve_aceitar_tipo_telefone_vazio() {
+	    telefone.setTipoTelefone("");
+	    assertTrue(hasErrors(telefone, "É necessário preencher o campo tipo de telefone"));
+	}
+
+	@Test
 	public void nao_deve_aceitar_tipo_telefone_com_numeros() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("O tipo de telefone não pode conter números");
-		telefone.setTipoTelefone("celular4");
+	    telefone.setTipoTelefone("celular4");
+	    assertTrue(hasErrors(telefone, "Tipo telefone não pode conter numeros"));
 	}
 
 	@Test 

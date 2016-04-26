@@ -31,17 +31,17 @@ public class Telefone {
     
     @NotNull(message="É necessário preencher o campo numero de telefone")
     @NotBlank(message="Campo numero telefone não deve ser vazio")
-    @Range(min=8,max=9)
-    @Pattern(regexp="\\d{8,9}")
+    @Range(min=8,max=9,message="numero de telefone com tamanho incorreto")
+    @Pattern(regexp="\\d{8,9}",message="O numero de telefone apenas deve contem números")
     private String numeroTelefone;
     /**
      * Recebe o numero de DDD
      */
     
     @NotNull(message="É necessário preencher o campo DDD")
-    @Length(max=TAMANHO_DDD)
+    @Length(max=TAMANHO_DDD,message="DDD com tamanho incorreto")
     @NotEmpty(message="Campo DDD não pode ser vazio")
-    @Pattern(regexp="\\d{3}")
+    @Pattern(regexp="\\d{3}",message="DDD não pode conter letras")
     private String ddd;
     
     /**
@@ -52,7 +52,7 @@ public class Telefone {
     @NotNull(message="É necessário preencher o campo tipo de telefone")
     @NotBlank(message="Tipo de telefone não pode ser vazio")
     @Size(min=TAMANHO_MIN_TIPO_TELEFONE,max=TAMANHO_MAX_TIPO_TELEFONE,message="O campo tipo de telefone está com tamanho incorreto")
-    @Pattern(regexp="\\D{4-15}")
+    @Pattern(regexp="\\D{4,15}",message="Tipo telefone não pode conter numeros")
     private String tipoTelefone;
     
     /**
@@ -74,8 +74,7 @@ public class Telefone {
      * 
      */
     public void setNumeroTelefone(String numeroTelefone) {
-        this.validateNumeroTelefoneAll(numeroTelefone);
-        this.numeroTelefone = numeroTelefone;
+       this.numeroTelefone = numeroTelefone;
     }
 
     /**
@@ -96,9 +95,7 @@ public class Telefone {
      * @throws NullArgumentException , caso o DDD seja nulo
      */
     public void setDdd(String ddd) {
-        this.validateDddAll(ddd);
-        
-        this.ddd = ddd;
+       this.ddd = ddd;
     }
 
     /**
@@ -120,7 +117,6 @@ public class Telefone {
      */
      
     public void setTipoTelefone(String tipoTelefone) {
-        this.validateTipoTelefoneAll(tipoTelefone);
         this.tipoTelefone = tipoTelefone;
     }
 
@@ -141,7 +137,13 @@ public class Telefone {
      * @throws IllegalArgumentException
      */
     private void validateNumeroTelefoneTamanho(String numeroTelefone) {
-        checkArgument(!(numeroTelefone.length() != TelefoneType.FIXO.getTamanho()), "O Tamanho do telefone esta incorreto");
+        checkArgument(!(numeroTelefone.length() != TelefoneType.FIXO.getTamanho()) || !(numeroTelefone.length()!=TelefoneType.CELULAR.getTamanho()), "O Tamanho do telefone esta incorreto");
+    }
+    
+    private void validateTipoTelefoneIguais(String tipoTelefone){
+        if(this.tipoTelefone.equals(tipoTelefone)){
+            throw new IllegalArgumentException("Não é possivel cadastrar dois numeros do mesmo tipo");
+        }
     }
 
     /**
@@ -291,7 +293,6 @@ public class Telefone {
             checkArgument(!isDigit(tipotelchar), "O tipo de telefone não pode conter números");
         }
     }
-
     /**
      * Recebe o parametro tipoTelefone e faz a validação de todos os casos
      * 
@@ -305,6 +306,7 @@ public class Telefone {
         this.validateTipoTelefoneCaracter(tipoTelefone);
         this.validateTipoTelefoneTamanhoMaximo(tipoTelefone);
         this.validateTipoTelefoneTamanhoMinimo(tipoTelefone);
+        this.validateTipoTelefoneIguais(tipoTelefone);
     }
 
     /*

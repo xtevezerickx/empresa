@@ -17,6 +17,11 @@ public class TelefoneTemplate implements TemplateLoader {
             add("numeroTelefone",random("123456","987654324441","654789l23"));
             add("tipoTelefone",random("oo","c54778",""));
         }});
+        Fixture.of(Telefone.class).addTemplate("iguais", new Rule(){{
+            add("ddd","1");
+            add("numeroTelefone","949789056");
+            add("tipoTelefone","celular");
+        }});
     }
 
     

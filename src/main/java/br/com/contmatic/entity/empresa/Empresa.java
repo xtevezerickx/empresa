@@ -2,12 +2,10 @@ package br.com.contmatic.entity.empresa;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static java.lang.Character.isDigit;
-import static java.lang.Character.isLetter;
 
 import java.util.Set;
 
-import javax.validation.Valid;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -23,10 +21,14 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.hibernate.validator.constraints.br.CNPJ;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
+import br.com.caelum.stella.bean.validation.CNPJ;
+
+
+
 
 public class Empresa {
 	/**
@@ -64,9 +66,8 @@ public class Empresa {
 	
 	@NotNull(message="É necessário preencher o nome fantasia")
 	@NotBlank(message="Nome Fantasia não pode estar vazio" )	
-	@Max(value=TAMANHO_MAX_NOME_FANTASIA,message="O Tamanho do nome fantasia esta maior que o aceitavel")
-	@Min(value=TAMANHO_MIN_NOME_FANTASIA,message="O Tamanho do nome fantasia esta menor que o aceitavel")
-	@Pattern(regexp = "\\D{8-30}")  
+	@Length(min=TAMANHO_MIN_NOME_FANTASIA,max=TAMANHO_MAX_NOME_FANTASIA,message="Nome Fantasia tamanho incorreto")
+	@Pattern(regexp = "\\D{8,30}")
 	private String nomeFantasia;
 	
 	/**
@@ -74,14 +75,17 @@ public class Empresa {
 	 */
 	
 	@NotNull(message="É necessário preencher o nome do proprietário")
+	@NotBlank(message="Nome do proprietário não pode estar vazio")
+	@Max(value = TAMANHO_MAX_NOME_PROPRIETARIO,message="campo nome proprietário contem mais que 30 caracteres")
+	@Min(value = TAMANHO_MIN_NOME_PROPRIETARIO,message="campo nome proprietário contem menos que 8 caracteres")
+	@Pattern(regexp="\\D{8,30}",message="Nome proprietário não deve conter números")
 	private String nomeProprietario;
-	/**
-	 * Recebe o cnpj da empresa
-	 */
-	@CNPJ
+	
+	/**Recebe o cnpj da empresa*/
+	@CNPJ(message="CNPJ nao deve conter letras")
 	@NotNull(message= "CNPJ deve ser preenchido")
 	@NotBlank(message="CNPJ não pode estar vazio")
-	@Length(max=TAMANHO_CNPJ,message="Tamanho do CNPJ incorrreto")
+	@Length(max=TAMANHO_CNPJ,min=TAMANHO_CNPJ ,message="Tamanho do CNPJ incorrreto")
     private String cnpj;
 		
 	@Email
@@ -89,31 +93,44 @@ public class Empresa {
 	@NotBlank(message="Email não pode ser vazio")
     @Size(min=TAMANHO_MIN_EMAIL,max=TAMANHO_MAX_EMAIL,message="Tamanho do email incorreto")
 	private String email;
+	
 	/**
 	 * Recebe os numeros de telefone da empresa
 	 */
 	
 	@NotEmpty
-	private Set<Telefone> telefone;
+	@NotNull
+	private Set<Telefone> telefones;
 	/**
 	 * Recebe os enderecos da empresa
 	 */
+
 	@NotEmpty
+	@NotNull(message="Endereço não pode ser vazio")
 	private Set<Endereco> endereco;
-	/**
+	
+    /**
 	 * Recebe a data de criação da empresa
 	 */
-	@NotNull(message="Data de criacao deve ser preenchida")
+	
+	@NotNull (message="Data de criacao deve ser preenchida")
 	private DateTime dataCriacao;
+	
 	/**
 	 * Recebe a data de alteração da empresa
 	 */
+	
+	@Future
 	private DateTime dataAlteracao;
+	
+	
+	
 
 	/**
 	 * Retorna o nome fantasia do objeto
 	 * @return String
 	 */
+	
 	public String getNomeFantasia() {
 		return nomeFantasia;
 	}
@@ -125,12 +142,12 @@ public class Empresa {
 	 * e o parametro não é inserido na variavel.
 	 * @param nomeFantasia
 	 * @throws IllegalArgumentException , caso o nome fantasia seja vazio ou tamanho incorreto
-	 * @throws NullArgumentException , caso o nome fantasia seja nulo
+	 
 	 * 
 	 */
 	
 	public void setNomeFantasia(String nomeFantasia) {
-		this.validateNomeFantasiaAll(nomeFantasia);
+		//this.validateNomeFantasiaAll(nomeFantasia);
 		this.nomeFantasia = nomeFantasia;
 	}
 
@@ -152,7 +169,7 @@ public class Empresa {
 	 * 
 	 */
 	public void setNomeProprietario(String nomeProprietario) {
-		this.validateNomeProprietarioAll(nomeProprietario);
+		
 		this.nomeProprietario = nomeProprietario;
 	}
 
@@ -160,9 +177,6 @@ public class Empresa {
 	 * Retorna um array de telefones do objeto
 	 * @return Telefone[]
 	 */
-	public Set<Telefone> getTelefone() {
-		return telefone;
-	}
 
 	/**
 	 * Recebe um array do tipo Telefone como parametro e insere esta array na variavel telefone
@@ -173,10 +187,15 @@ public class Empresa {
 	 * @throws NullArgumentException , caso um dos telefones da empresa seja nulo
 	 * 
 	 */
-	public void setTelefone(Set<Telefone> telefone) {
-		//this.validateEmpresaPrecisaDeDoisTelefones(telefone);
-		this.telefone = telefone;
+	public void setTelefone(Telefone telefone) {
+		this.validateTelefoneIgual(telefone);
+		this.validateEmpresaPrecisaDeDoisTelefones();
+		this.telefones.add(telefone);
 	}
+	
+	public Set<Telefone> getTelefone() {
+        return telefones;
+    }
 
 	/**
 	 * Retorna um array de endereços do objeto
@@ -195,11 +214,10 @@ public class Empresa {
 	 * @throws NullArgumentException , caso um dos enderecos da empresa seja nulo
 	 * 
 	 */
-	@NotNull(message="É necessário preencher o endereço")
-	public void setEndereco(Set<Endereco> endereco) {
-		this.validateEnderecoNotNull(endereco);
-		this.validateEmpresaPrecisaDeDoisEnderecos(endereco);
-		this.endereco = endereco;
+	
+	public void setEndereco(Endereco endereco) {
+		this.validateEmpresaPrecisaDeDoisEnderecos();
+		this.endereco.add(endereco);
 	}
 
 	/**
@@ -224,7 +242,6 @@ public class Empresa {
 	
 	
 	public void setEmail(String email) {
-		this.validateEmailAll(email);
 		this.email = email;
 	}
 
@@ -250,7 +267,6 @@ public class Empresa {
 	 */
 	
 	public void setCnpj(String cnpj) {
-		this.validateCNPJAll(cnpj);
 		this.cnpj = cnpj;
 	}
 
@@ -273,9 +289,6 @@ public class Empresa {
 	 * 
 	 */
 	public void setDataCriacao(DateTime dataCriacao) {
-		this.validateDataCriacaoNotNull(dataCriacao);
-		this.validateDataCriacaoMaiorQueAtual(dataCriacao);
-		this.validateDataCriacaoMenorQueAtual(dataCriacao);
 		this.dataCriacao = dataCriacao;
 	}
 
@@ -302,228 +315,32 @@ public class Empresa {
 		this.dataAlteracao = dataAlteracao;
 	}
 
-	/**
-	 * Valida se o CNPJ está nulo
-	 * @param cnpj
-	 * @throws NullPointerException
-	 */
-	private void validateCNPJNotNull(String cnpj) {
-		checkNotNull(cnpj,"CNPJ não pode ser nulo");	
-	}
-
-	/**
-	 * Valida se o CNPJ esta com o tamanho correto
-	 * @param cnpj
-	 * @throws IllegalArgumentException
-	 */
-	private void validateCNPJTamanho(String cnpj) {
-		checkArgument(cnpj.length()==TAMANHO_CNPJ,"Tamanho do CNPJ incorreto");		
-	}
-
-	/**
-	 * Valida se o CNPJ está vazio
-	 * @param cnpj
-	 * @throws IllegalArgumentException
-	 */
-	private void validateCNPJVazio(String cnpj) {
-		checkArgument(!cnpj.isEmpty(),"CNPJ não pode estar vazio");
-	}
-
-	/**
-	 * Valida se o CNPJ contém letras
-	 * @param cnpj
-	 * @throws IllegalArgumentException
-	 */
-	private void validateCNPJContemLetra(String cnpj) {
-		for (int i = 0; i < cnpj.length(); i++) {
-			char c = cnpj.charAt(i);
-			checkArgument(!isLetter(c),"CNPJ não pode conter letras");
-		}
-
-	}
-
-	/**
-	 * Recebe o parametro CNPJ e faz a validação de todos os casos
-	 * @param cnpj
-	 * @throws IllegalArgumentException , caso o CNPJ contenha letras,seja vazio ou tamanho incorreto
-	 * @throws NullArgumentException , caso o CPNJ seja nulo
-	 */
-	private void validateCNPJAll(String cnpj) {
-		this.validateCNPJNotNull(cnpj);
-		this.validateCNPJVazio(cnpj);
-		this.validateCNPJContemLetra(cnpj);
-		this.validateCNPJTamanho(cnpj);
-
-	}
-
-	/**
-	 * Valida se o parametro recebido nome fantasia está nulo
-	 * @param nomeFantasia
-	 * @throws NullPointerException
-	 */
-	private void validateNomeFantasiaNotNull(String nomeFantasia) {
-		checkNotNull(nomeFantasia,"Nome Fantasia não pode ser nulo");	
-	}
-	/**
-	 * Valida se o parametro recebido nome fantasia está vazio
-	 * @param nomeFantasia
-	 * @throws IllegalArgumentException
-	 */
-	private void validateNomeFantasiaVazio(String nomeFantasia) {
-		checkArgument(!nomeFantasia.isEmpty(),"Nome Fantasia não pode estar vazio");
-	}
-	/**
-	 * Valida se o parametro recebido nome fantasia esta com tamanho menor que o aceitavel
-	 * @param nomeFantasia
-	 * @throws IllegalArgumentException
-	 */
-	private void validateNomeFantasiaTamanhoMinimo(String nomeFantasia) {
-		checkArgument(!(nomeFantasia.length()<TAMANHO_MIN_NOME_FANTASIA),"O Tamanho do nome fantasia esta menor que o aceitavel");	
-	}
-	/**
-	 * Valida se o parametro recebido nome fantasia esta com tamanho maior que o aceitavel
-	 * @param nomeFantasia
-	 * @throws IllegalArgumentException
-	 */
-	private void validateNomeFantasiaTamanhoMaximo(String nomeFantasia) {
-		checkArgument(!(nomeFantasia.length()>TAMANHO_MAX_NOME_FANTASIA),"O Tamanho do nome fantasia esta maior que o aceitavel");
-	}
-
-	/**
-	 * Recebe o parametro nomeFantasia e faz a validação de todos os casos
-	 * @param nomeFantasia
-	 * @throws IllegalArgumentException , caso o nome fantasia seja vazio ou tamanho incorreto
-	 * @throws NullArgumentException , caso o nome fantasia seja nulo
-	 */
-	private void validateNomeFantasiaAll(String nomeFantasia) {
-		this.validateNomeFantasiaNotNull(nomeFantasia);
-		this.validateNomeFantasiaVazio(nomeFantasia);
-		this.validateNomeFantasiaTamanhoMinimo(nomeFantasia);
-		this.validateNomeFantasiaTamanhoMaximo(nomeFantasia);
-
-	}
-	/**
-	 * Valida se o parametro recebido nome proprietario está nulo
-	 * @param nomeProprietario
-	 * @throws NullPointerException
-	 */
-	private void validateNomeProprietarioNotNull(String nomeProprietario) {
-		checkNotNull(nomeProprietario,"Nome do proprietário não pode ser nulo");
-	}
-	/**
-	 * Valida se o parametro recebido nome proprietário está vazio
-	 * @param nomeProprietario
-	 * @throws IllegalArgumentException
-	 */
-	private void validateNomeProprietarioVazio(String nomeProprietario) {
-		checkArgument(!nomeProprietario.isEmpty(),"Nome do proprietário não pode estar vazio");
-	}
-
-	/**
-	 * Valida se o parametro recebido nome proprietario esta com tamanho menor que o aceitavel
-	 * @param nomeProprietario
-	 * @throws IllegalArgumentException
-	 */
-	private void validateNomeProprietarioTamanhoMinimo(String nomeProprietario) {
-		checkArgument(!(nomeProprietario.length() < TAMANHO_MIN_NOME_PROPRIETARIO),"O Tamanho do nome proprietario esta menor que o tamanho aceitavel");
-	}
-	/**
-	 * Valida se o parametro recebido nome proprietario esta com tamanho maior que o aceitavel
-	 * @param nomeProprietario
-	 * @throws IllegalArgumentException
-	 */
-	private void validateNomeProprietarioTamanhoMaximo(String nomeProprietario) {
-		checkArgument(!(nomeProprietario.length() > TAMANHO_MAX_NOME_PROPRIETARIO),"O Tamanho do nome proprietario esta maior que o tamanho aceitavel");
-	}
-	/**
-	 * Valida se o parametro recebido nome proprietario contem numeros
-	 * @param nomeProprietario
-	 * @throws IllegalArgumentException
-	 */
-	private void validateNomeProprietarioComNumeros(String nomeProprietario) {
-		for (int i = 0; i < nomeProprietario.length(); i++) {
-			char nome = nomeProprietario.charAt(i);
-			checkArgument(!isDigit(nome),"Nome do proprietario não pode conter numeros");
-		}
-	}
-
-	/**
-	 * Recebe o parametro nome proprietario e faz a validação de todos os casos
-	 * @param nomeProprietario
-	 * @throws IllegalArgumentException , caso o nome proprietario contenha numeros,seja vazio ou tamanho incorreto
-	 * @throws NullArgumentException , caso o nome proprietario seja nulo
-	 */
-	private void validateNomeProprietarioAll(String nomeProprietario) {
-		this.validateNomeProprietarioNotNull(nomeProprietario);
-		this.validateNomeProprietarioVazio(nomeProprietario);
-		this.validateNomeProprietarioComNumeros(nomeProprietario);
-		this.validateNomeProprietarioTamanhoMinimo(nomeProprietario);
-		this.validateNomeProprietarioTamanhoMaximo(nomeProprietario);
-		
-	}
-
-	/**
-	 * Valida se o parametro recebido email está nulo
-	 * @param email
-	 * @throws NullPointerException
-	 */
-	private void validateEmailNotNull(String email) {
-		checkNotNull(email,"Email não pode ser nulo");
-	}
-	/**
-	 * Valida se o parametro recebido email está vazio
-	 * @param email
-	 * @throws IllegalArgumentException
-	 */
-	private void validateEmailVazio(String email) {
-		checkArgument(!email.isEmpty(),"Email não pode ser vazio");
-	}
-
-	/**
-	 * Valida se o parametro recebido email esta com tamanho menor que o aceitavel
-	 * @param email
-	 * @throws IllegalArgumentException
-	 */
-	private void validateEmailTamanhoMinimo(String email) {
-		checkArgument(!(email.length() < TAMANHO_MIN_EMAIL),"O Tamanho do email esta menor que o aceitavel");
-	}
-	/**
-	 * Valida se o parametro recebido email esta com tamanho maior que o aceitavel
-	 * @param email
-	 * @throws IllegalArgumentException
-	 */
-	private void validateEmailTamanhoMaximo(String email) {
-		checkArgument(!(email.length() > TAMANHO_MAX_EMAIL),"O Tamanho do email esta maior que o aceitavel");
-	}
-	/**
-	 * Recebe o parametro email e faz a validação de todos os casos
-	 * @param email
-	 * @throws IllegalArgumentException , caso o email contenha seja vazio ou tamanho incorreto
-	 * @throws NullArgumentException , caso o email seja nulo
-	 */
-	private void validateEmailAll(String email) {
-		this.validateEmailNotNull(email);
-		this.validateEmailVazio(email);
-		this.validateEmailTamanhoMinimo(email);
-		this.validateEmailTamanhoMaximo(email);
-
-	}
+	
+	
 	/**
 	 * Valida se o parametro recebido endereco esta nulo
 	 * @param endereco
 	 * @throws NullPointerException
 	 */
-	//TODO
-	private void validateEmpresaPrecisaDeDoisEnderecos(Set<Endereco> endereco) {
-	    checkNotNull(endereco,"É Necessário preecher todos os enderecos da empresa");
+	
+	private void validateEmpresaPrecisaDeDoisEnderecos() {
+	     checkArgument(!(endereco.size()!=2),"A empresa precisa de pelo menos dois enderecos");
   	}
 
+	private void validateTelefoneIgual(Telefone telefone){
+	    if(this.telefones.contains(telefone)){
+	        throw new IllegalArgumentException("Empresa não pode ter dois telefones iguais cadastrados");
+	    }
+	}
+	
+	
+	
 	/**
 	 * Valida se o parametro recebido endereco está nulo
 	 * @param endereco
 	 * @throws NullPointerException
 	 */
-	private void validateEnderecoNotNull(Set<Endereco> endereco) {
+	private void validateEnderecoNotNull(Endereco endereco) {
 		checkNotNull(endereco,"Endereco não pode ser nulo");
 	}
 	/**
@@ -532,11 +349,9 @@ public class Empresa {
 	 * @throws IllegalArgumentException
 	 */
 	
-	//TODO
-	private void validateEmpresaPrecisaDeDoisTelefones(Telefone[] telefone) {
-		for (int i = 0; i < telefone.length; i++) {
-			checkNotNull(telefone[i],"É Necessário preecher todos os telefones da empresa");
-		}
+	
+	private void validateEmpresaPrecisaDeDoisTelefones() {
+	      checkArgument(!(telefones.size()!=2),"A empresa precisa de pelo menos dois telefones");
 	}
 	/**
 	 * Valida se o parametro recebido data de criação está nulo
@@ -607,7 +422,7 @@ public class Empresa {
               .append(this.email != null ? "Email: " + this.email : null)
               .append(this.dataCriacao != null ? "Data de criação: " +  dataCriacaoString : null)
               .append(this.dataAlteracao != null ? "Data da alteração: " + dataAlteracaoString : null)
-              .append(telefone)
+              .append(telefones)
               .append(endereco)
               .build();
 
