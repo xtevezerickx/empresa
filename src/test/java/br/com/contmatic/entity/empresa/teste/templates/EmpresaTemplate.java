@@ -9,8 +9,12 @@ import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
 
+
 public class EmpresaTemplate implements TemplateLoader{
  
+    /* (non-Javadoc)
+     * @see br.com.six2six.fixturefactory.loader.TemplateLoader#load()
+     */
     public void load() {
    
         Fixture.of(Empresa.class).addTemplate("valido", new Rule(){{
@@ -30,6 +34,7 @@ public class EmpresaTemplate implements TemplateLoader{
             add("nomeProprietario",random("Erick","Maia","Silva"));
             add("endereco",has(1).of(Endereco.class,"invalido"));
             add("telefones",has(1).of(Telefone.class,"invalido"));
+            add("dataAlteracao",new DateTime(2016,04,25,0,0,0).minusDays(2));
         }});
         Fixture.of(Empresa.class).addTemplate("telefone_igual", new Rule(){{
             add("cnpj",random("11","5gdf5","333333333f3333"));
@@ -37,6 +42,13 @@ public class EmpresaTemplate implements TemplateLoader{
             add("nomeFantasia",random("ff",""));
             add("nomeProprietario",random("Erick","Maia","Silva"));        
             add("telefones", has(2).of(Telefone.class,"iguais"));
+        }});
+        Fixture.of(Empresa.class).addTemplate("endereco_igual", new Rule(){{
+            add("cnpj",random("11","5gdf5","333333333f3333"));
+            add("email",random("1",""));
+            add("nomeFantasia",random("ff",""));
+            add("nomeProprietario",random("Erick","Maia","Silva"));        
+            add("endereco", has(2).of(Endereco.class,"iguais"));
         }});
         
     }

@@ -14,22 +14,24 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
 public class Telefone {
-
+    /**Constante para tamanho maximo tipo telefone*/
     private static final int TAMANHO_MAX_TIPO_TELEFONE=15;
+    
+    /**Constante para tamanho DDD*/
     private static final int TAMANHO_DDD=3;
+    
+    /**Constante para tamanho minimo tipo telefone*/
     private static final int TAMANHO_MIN_TIPO_TELEFONE=4;
-    /**
-     * Recebe o numero de telefone
-     */
+    
+    /**Recebe o numero de telefone */
     
     @NotNull(message="É necessário preencher o campo numero de telefone")
     @NotBlank(message="Campo numero telefone não deve ser vazio")
     @Range(min=8,max=9,message="numero de telefone com tamanho incorreto")
     @Pattern(regexp="\\d{8,9}",message="O numero de telefone apenas deve contem números")
     private String numeroTelefone;
-    /**
-     * Recebe o numero de DDD
-     */
+    
+    /** Recebe o numero de DDD. */
     
     @NotNull(message="É necessário preencher o campo DDD")
     @Length(max=TAMANHO_DDD,message="DDD com tamanho incorreto")
@@ -37,9 +39,7 @@ public class Telefone {
     @Pattern(regexp="\\d{3}",message="DDD não pode conter letras")
     private String ddd;
     
-    /**
-     * Recebe o tipo de telefone, exemplo: Comercial, celular, casa, etc
-     */
+    /** Recebe o tipo de telefone, exemplo: Comercial, celular, casa, etc    */
     
     
     @NotNull(message="É necessário preencher o campo tipo de telefone")
@@ -48,9 +48,8 @@ public class Telefone {
     @Pattern(regexp="\\D{4,15}",message="Tipo telefone não pode conter numeros")
     private String tipoTelefone;
     
-    /**
-     * Retorna o numero de telefone do objeto
-     * 
+    /**Retorna o numero de telefone do objeto
+     *  
      * @return String numeroTelefone
      */
     public String getNumeroTelefone() {
@@ -58,13 +57,9 @@ public class Telefone {
     }
 
     /**
-     * Recebe uma String como parametro e insere esta String na variavel numeroTelefone É feito a validação do parametro antes de inserir na variavel do objeto, caso aconteça alguma excessão, é
-     * lançado uma mensagem correpondente ao erro e o parametro não é inserido na variavel.
+     * Recebe uma String como parametro e insere esta String na variavel numeroTelefone 
      * 
      * @param numeroTelefone
-     * @throws IllegalArgumentException  caso o numero de telefone contenha caracter, seja vazio ou tamanho incorreto
-     * @throws NullArgumentException  caso o numero de telefone seja nulo
-     * 
      */
     public void setNumeroTelefone(String numeroTelefone) {
        this.numeroTelefone = numeroTelefone;
@@ -80,12 +75,8 @@ public class Telefone {
     }
 
     /**
-     * Recebe uma String como parametro e insere esta String na variavel DDD É feito a validação do parametro antes de inserir na variavel do objeto, caso aconteça alguma excessão, é lançado uma
-     * mensagem correpondente ao erro e o parametro não é inserido na variavel.
-     * 
+     * Recebe uma String como parametro e insere esta String na variavel DDD 
      * @param ddd
-     * @throws IllegalArgumentException , caso o DDD contenha caracter, seja vazio ou tamanho incorreto
-     * @throws NullArgumentException , caso o DDD seja nulo
      */
     public void setDdd(String ddd) {
        this.ddd = ddd;
@@ -101,13 +92,10 @@ public class Telefone {
     }
 
     /**
-     * Recebe uma String como parametro e insere esta String na variavel tipoTelefone É feito a validação do parametro antes de inserir na variavel do objeto, caso aconteça alguma excessão, é lançado
-     * uma mensagem correpondente ao erro e o parametro não é inserido na variavel.
+     * Recebe uma String como parametro e insere esta String na variavel tipoTelefone
      * 
      * @param tipoTelefone
-     * @throws IllegalArgumentException , caso o tipo de telefone contenha numeros,seja vazio ou tamanho incorreto
-     * @throws NullArgumentException , caso o tipo de telefone seja nulo
-     */
+    */
      
     public void setTipoTelefone(String tipoTelefone) {
         this.tipoTelefone = tipoTelefone;

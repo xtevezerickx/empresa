@@ -9,16 +9,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -33,11 +29,11 @@ import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 @FixMethodOrder(NAME_ASCENDING)
 
 public class EmpresaTeste {
-    
 
     private Empresa empresa;
     private Empresa empresaInvalida;
     private Empresa empresaTelefoneIgual;
+    private Empresa empresaEnderecoIgual;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -61,24 +57,29 @@ public class EmpresaTeste {
     @Before
     public void setUp() {
 
-        
         FixtureFactoryLoader.loadTemplates("br.com.contmatic.entity.empresa.teste.templates");
-        empresa =  Fixture.from(Empresa.class).gimme("valido");
-        empresaInvalida= Fixture.from(Empresa.class).gimme("invalido");
+        empresa = Fixture.from(Empresa.class).gimme("valido");
+        empresaInvalida = Fixture.from(Empresa.class).gimme("invalido");
         empresaTelefoneIgual = Fixture.from(Empresa.class).gimme("telefone_igual");
+        empresaEnderecoIgual = Fixture.from(Empresa.class).gimme("endereco_igual");
 
-        
     }
 
-    
     @Test
-    public void nao_deve_aceitar_telefones_iguais(){
+    public void nao_deve_aceitar_telefones_iguais() {
         thrown.expect(IllegalArgumentException.class);
-        Telefone telefone1 = Fixture.from(Telefone.class).gimme("iguais");
-         empresaTelefoneIgual.setTelefone(telefone1);            
+        Telefone telefone = Fixture.from(Telefone.class).gimme("iguais");
+        empresaTelefoneIgual.setTelefone(telefone);
     }
-    
-    
+
+    @Test
+    public void nao_deve_aceitar_enderecos_iguais() {
+        thrown.expect(IllegalArgumentException.class);
+        Endereco endereco = Fixture.from(Endereco.class).gimme("iguais");
+        empresaEnderecoIgual.setEndereco(endereco);
+
+    }
+
     @Test(timeout = 1000)
     public void deve_aceitar_nome_fantasia_valido() {
         String nomeFantasia = "nome empresa";
@@ -110,33 +111,33 @@ public class EmpresaTeste {
     @Test
     public void nao_deve_aceitar_nome_fantasia_nulo() {
         empresa.setNomeFantasia(null);
-        assertTrue(ValidationUtil.hasErrors(empresa, "É necessário preencher o nome fantasia")); 
+        assertTrue(ValidationUtil.hasErrors(empresa, "É necessário preencher o nome fantasia"));
     }
 
     @Test
     public void nao_deve_aceitar_nome_fantasia_vazio() {
         empresa.setNomeFantasia("");
-        assertTrue(hasErrors(empresa, "Nome Fantasia não pode estar vazio" ));
+        assertTrue(hasErrors(empresa, "Nome Fantasia não pode estar vazio"));
     }
 
     @Test
     public void nao_deve_aceitar_nome_fantasia_com_minimo_de_caracteres() {
         empresa.setNomeFantasia("aaaa");
         assertTrue(hasErrors(empresa, "Nome Fantasia tamanho incorreto"));
-        
+
     }
 
     @Test
     public void nao_deve_aceitar_nome_fantasia_com_maximo_de_caracteres() {
         empresa.setNomeFantasia("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         assertTrue(hasErrors(empresa, "Nome Fantasia tamanho incorreto"));
-       
+
     }
 
     @Test
     public void nao_deve_aceitar_nome_proprietario_nulo() {
         empresa.setNomeProprietario(null);
-       assertTrue(hasErrors(empresa, "É necessário preencher o nome do proprietário"));
+        assertTrue(hasErrors(empresa, "É necessário preencher o nome do proprietário"));
     }
 
     @Test
@@ -154,7 +155,7 @@ public class EmpresaTeste {
     @Test
     public void nao_deve_aceitar_nome_proprietario_com_tamanho_maximo() {
         empresa.setNomeProprietario("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        assertTrue(hasErrors(empresa, "campo nome proprietário contem mais que 30 caracteres"));       
+        assertTrue(hasErrors(empresa, "campo nome proprietário contem mais que 30 caracteres"));
     }
 
     @Test
@@ -165,7 +166,7 @@ public class EmpresaTeste {
 
     @Test
     public void nao_deve_aceitar_cnpj_nulo() {
-        empresa.setCnpj(null);       
+        empresa.setCnpj(null);
         assertTrue(hasErrors(empresa, "CNPJ deve ser preenchido"));
     }
 
@@ -173,7 +174,7 @@ public class EmpresaTeste {
     public void nao_deve_aceitar_cnpj_com_letras() {
         empresa.setCnpj("1111111ff");
         assertTrue(hasErrors(empresa, "CNPJ nao deve conter letras"));
-       
+
     }
 
     @Test
@@ -219,71 +220,48 @@ public class EmpresaTeste {
     }
 
     @Test
-    //TODO
-    public void nao_deve_aceitar_endereco_nulo() {
-        empresa.setEndereco(null);
-        assertTrue(hasErrors(empresa,"Endereço não pode ser vazio"));
+    public void nao_deve_aceitar_endereco_com_um_endereco_apenas() {
+        assertThat(empresaInvalida.getEndereco().size(), lessThan(2));
+    }
 
-    }
-    
-    @Test
-    public void nao_deve_aceitar_endereco_com_um_endereco_apenas(){
-       assertThat(empresaInvalida.getEndereco().size(),lessThan(2));
-    }
-    
     @Test
     public void nao_deve_aceitar_data_criacao_nulo() {
         empresa.setDataCriacao(null);
-        assertTrue(hasErrors(empresa,"Data de criacao deve ser preenchida"));
+        assertTrue(hasErrors(empresa, "Data de criacao deve ser preenchida"));
     }
 
-    @Ignore
-    @Test
-    //TODO
-    public void nao_deve_aceitar_data_criacao_maior_que_atual() {
-        empresa.setDataCriacao(new DateTime(2016, 8, 20, 0, 0, 0));
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("A data de criação não pode ser maior que a atual");
-
-    }
-
-    @Ignore
-    @Test
-    //TODO
-    public void nao_deve_aceitar_data_criacao_menor_que_atual() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("A data da alteração não pode ser antes que a data de criação");
-        empresa.setDataAlteracao(new DateTime(100, 2, 25, 0, 0, 0));
-
-    }
-
-    @Test
+   @Test
     public void deve_aceitar_data_alteracao_maior_que_data_criacao() {
         DateTime dataAlteracao = new DateTime().plusDays(2);
+        DateTime dataAnterior = this.empresa.getDataAlteracao();
         empresa.setDataAlteracao(dataAlteracao);
-        assertTrue(this.empresa.getDataAlteracao().isAfter(empresa.getDataCriacao()));
+        assertTrue(empresa.getDataAlteracao().isAfter(dataAnterior));
     }
 
- 
+    @Test
+    public void nao_deve_aceitar_data_alteracao_menor_que_atual() {
+        assertTrue(hasErrors(empresaInvalida, "Data de alteração deve ser maior que a atual"));
+    }
+
     @Test
     public void deve_aceitar_data_criacao_valida() {
-        assertThat(new DateTime(2016,04,25,0,0,0), is(empresa.getDataCriacao()));
-    }
-   
-   @Test
-    public void deve_aceitar_endereco_valido() {
-        assertThat(empresa.getEndereco().size(),greaterThanOrEqualTo(2));
+        assertThat(new DateTime(2016, 04, 25, 0, 0, 0), is(empresa.getDataCriacao()));
     }
 
-      @Test
-    public void deve_aceitar_telefone_valido() {
-       assertThat(empresa.getTelefone().size(),greaterThanOrEqualTo(2));
-    }
-      
     @Test
-    public void nao_deve_aceitar_telefone_com_um_numero_apenas(){
-        assertThat(empresaInvalida.getTelefone().size(),lessThan(2));
-    }       
+    public void deve_aceitar_endereco_valido() {
+        assertThat(empresa.getEndereco().size(), greaterThanOrEqualTo(2));
+    }
+
+    @Test
+    public void deve_aceitar_telefone_valido() {
+        assertThat(empresa.getTelefone().size(), greaterThanOrEqualTo(2));
+    }
+
+    @Test
+    public void nao_deve_aceitar_telefone_com_um_numero_apenas() {
+        assertThat(empresaInvalida.getTelefone().size(), lessThan(2));
+    }
 
     @Test
     public void teste_to_string() {
