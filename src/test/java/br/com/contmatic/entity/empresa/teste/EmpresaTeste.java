@@ -155,13 +155,13 @@ public class EmpresaTeste {
     @Test
     public void nao_deve_aceitar_nome_proprietario_com_tamanho_maximo() {
         empresa.setNomeProprietario("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        assertTrue(hasErrors(empresa, "campo nome proprietário contem mais que 30 caracteres"));
+        assertTrue(hasErrors(empresa, "Campo nome proprietário está com tamanho incorreto"));
     }
 
     @Test
     public void nao_deve_aceitar_nome_proprietario_com_tamanho_minimo() {
         empresa.setNomeProprietario("ffff");
-        assertTrue(hasErrors(empresa, "campo nome proprietário contem menos que 8 caracteres"));
+        assertTrue(hasErrors(empresa, "Campo nome proprietário está com tamanho incorreto"));
     }
 
     @Test
@@ -230,7 +230,7 @@ public class EmpresaTeste {
         assertTrue(hasErrors(empresa, "Data de criacao deve ser preenchida"));
     }
 
-   @Test
+    @Test
     public void deve_aceitar_data_alteracao_maior_que_data_criacao() {
         DateTime dataAlteracao = new DateTime().plusDays(2);
         DateTime dataAnterior = this.empresa.getDataAlteracao();

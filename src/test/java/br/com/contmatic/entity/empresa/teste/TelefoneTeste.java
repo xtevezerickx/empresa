@@ -22,142 +22,139 @@ import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 
 @FixMethodOrder(NAME_ASCENDING)
 public class TelefoneTeste {
-	private Telefone telefone;
+    private Telefone telefone;
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-	
-	@BeforeClass
-	public static void setUpBeforeClass() {
-	    
-		System.out.println("Metodos sendo utilizados antes de iniciar a classe Telefone Teste");
-		
-		
-	}
-	
-	@Before
-	public void setUp() {
- 
-	    FixtureFactoryLoader.loadTemplates("br.com.contmatic.entity.empresa.teste.templates");
-	    telefone =  Fixture.from(Telefone.class).gimme("valido");
-	    
-	}
-	
-	
-	@After
-	public void tearDown(){
-		telefone = null;
-	}
-	@AfterClass
-	public static void tearDownAfterClass() {
-		System.out.println("Metodos executados depois da classe Telefone Teste");
-	}
-	
-	
-	
-	@Test (timeout=1000)
-	public void deve_aceitar_numero_telefone_valido() {
-		String numeroTelefone = "94978905";
-		telefone.setNumeroTelefone(numeroTelefone);
-		assertThat(numeroTelefone, is(telefone.getNumeroTelefone()));
-	}
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
-	@Test(timeout=1000)
-	public void deve_aceitar_ddd_valido() {
-		String ddd = "011";
-		telefone.setDdd(ddd);
-		assertEquals(ddd,telefone.getDdd());
-	}
+    @BeforeClass
+    public static void setUpBeforeClass() {
 
-	@Test(timeout=1000)
-	public void deve_aceitar_tipo_telefone_valido() {
-		String tipoTelefone = "comercial";
-		telefone.setTipoTelefone(tipoTelefone);
-		assertEquals(tipoTelefone,telefone.getTipoTelefone());
-	}
+        System.out.println("Metodos sendo utilizados antes de iniciar a classe Telefone Teste");
 
-	
-	@Test
-	public void to_string(){
-	    System.out.println(telefone);
-	}
-	@Test
-	public void nao_deve_aceitar_numero_telefone_nulo() {
-	    telefone.setNumeroTelefone(null);
-	    assertTrue(hasErrors(telefone, "É necessário preencher o campo numero de telefone"));
-	}
-	
-	@Test 
-	public void nao_deve_aceitar_numero_telefone_vazio() {
-	    telefone.setNumeroTelefone("");
-	    assertTrue(hasErrors(telefone, "Campo numero telefone não deve ser vazio"));
-	}
+    }
 
-	@Test
-	public void nao_deve_aceitar_numero_telefone_tamanho_incorreto() {
-	    telefone.setNumeroTelefone("11111");
-	    assertTrue(hasErrors(telefone, "numero de telefone com tamanho incorreto"));
-	}
+    @Before
+    public void setUp() {
 
-	@Test
-	public void nao_deve_aceitar_numero_telefone_com_letras() {
-	    telefone.setNumeroTelefone("fff");
-	    assertTrue(hasErrors(telefone, "O numero de telefone apenas deve contem números"));
-	}
+        FixtureFactoryLoader.loadTemplates("br.com.contmatic.entity.empresa.teste.templates");
+        telefone = Fixture.from(Telefone.class).gimme("valido");
 
-	@Test
-	public void nao_deve_aceitar_ddd_nulo() {
-	    telefone.setDdd(null);
-	    assertTrue(hasErrors(telefone, "É necessário preencher o campo DDD"));
-	}
+    }
 
-	@Test
-	public void nao_deve_aceitar_ddd_vazio() {
-	    telefone.setDdd("");
-	    assertTrue(hasErrors(telefone, "Campo DDD não pode ser vazio"));		
-	}
+    @After
+    public void tearDown() {
+        telefone = null;
+    }
 
-	@Test
-	public void nao_deve_aceitar_ddd_com_tamanho_errado() {
-	    telefone.setDdd("44444");
-	    assertTrue(hasErrors(telefone, "DDD com tamanho incorreto"));
-		
-	}
+    @AfterClass
+    public static void tearDownAfterClass() {
+        System.out.println("Metodos executados depois da classe Telefone Teste");
+    }
 
-	@Test
-	public void nao_deve_aceitar_ddd_com_letras() {
-	    telefone.setDdd("01d");
-	    assertTrue(hasErrors(telefone, "DDD não pode conter letras"));
-	}
+    @Test(timeout = 1000)
+    public void deve_aceitar_numero_telefone_valido() {
+        String numeroTelefone = "94978905";
+        telefone.setNumeroTelefone(numeroTelefone);
+        assertThat(numeroTelefone, is(telefone.getNumeroTelefone()));
+    }
 
-	@Test
-	public void nao_deve_aceitar_tipo_telefone_vazio() {
-	    telefone.setTipoTelefone("");
-	    assertTrue(hasErrors(telefone, "Tipo de telefone não pode ser vazio"));
-	}
+    @Test(timeout = 1000)
+    public void deve_aceitar_ddd_valido() {
+        String ddd = "011";
+        telefone.setDdd(ddd);
+        assertEquals(ddd, telefone.getDdd());
+    }
 
-	@Test
-	public void nao_deve_aceitar_tipo_telefone_com_numeros() {
-	    telefone.setTipoTelefone("celular4");
-	    assertTrue(hasErrors(telefone, "Tipo telefone não pode conter numeros"));
-	}
+    @Test(timeout = 1000)
+    public void deve_aceitar_tipo_telefone_valido() {
+        String tipoTelefone = "comercial";
+        telefone.setTipoTelefone(tipoTelefone);
+        assertEquals(tipoTelefone, telefone.getTipoTelefone());
+    }
 
-	@Test 
-	public void nao_deve_aceitar_tipo_telefone_tamanho_maximo() {
-	    telefone.setTipoTelefone("ffffffffffffffffffffffffffffffffffffff");
-	    assertTrue(hasErrors(telefone, "O campo tipo de telefone está com tamanho incorreto"));
-	}
+    @Test
+    public void to_string() {
+        System.out.println(telefone);
+    }
 
-	@Test 
-	public void nao_deve_aceitar_tipo_telefone_tamanho_minimo() {
-	    telefone.setTipoTelefone("fff");
-	    assertTrue(hasErrors(telefone, "O campo tipo de telefone está com tamanho incorreto"));
-	}
+    @Test
+    public void nao_deve_aceitar_numero_telefone_nulo() {
+        telefone.setNumeroTelefone(null);
+        assertTrue(hasErrors(telefone, "É necessário preencher o campo numero de telefone"));
+    }
 
-	@Test
-	public void nao_deve_aceitar_tipo_telefone_nulo() {
-	    telefone.setTipoTelefone(null);
-	    assertTrue(hasErrors(telefone, "É necessário preencher o campo tipo de telefone"));
-	}
+    @Test
+    public void nao_deve_aceitar_numero_telefone_vazio() {
+        telefone.setNumeroTelefone("");
+        assertTrue(hasErrors(telefone, "Campo numero telefone não deve ser vazio"));
+    }
+
+    @Test
+    public void nao_deve_aceitar_numero_telefone_tamanho_incorreto() {
+        telefone.setNumeroTelefone("11111");
+        assertTrue(hasErrors(telefone, "numero de telefone com tamanho incorreto"));
+    }
+
+    @Test
+    public void nao_deve_aceitar_numero_telefone_com_letras() {
+        telefone.setNumeroTelefone("fff");
+        assertTrue(hasErrors(telefone, "O numero de telefone apenas deve contem números"));
+    }
+
+    @Test
+    public void nao_deve_aceitar_ddd_nulo() {
+        telefone.setDdd(null);
+        assertTrue(hasErrors(telefone, "É necessário preencher o campo DDD"));
+    }
+
+    @Test
+    public void nao_deve_aceitar_ddd_vazio() {
+        telefone.setDdd("");
+        assertTrue(hasErrors(telefone, "Campo DDD não pode ser vazio"));
+    }
+
+    @Test
+    public void nao_deve_aceitar_ddd_com_tamanho_errado() {
+        telefone.setDdd("44444");
+        assertTrue(hasErrors(telefone, "DDD com tamanho incorreto"));
+
+    }
+
+    @Test
+    public void nao_deve_aceitar_ddd_com_letras() {
+        telefone.setDdd("01d");
+        assertTrue(hasErrors(telefone, "DDD não pode conter letras"));
+    }
+
+    @Test
+    public void nao_deve_aceitar_tipo_telefone_vazio() {
+        telefone.setTipoTelefone("");
+        assertTrue(hasErrors(telefone, "Tipo de telefone não pode ser vazio"));
+    }
+
+    @Test
+    public void nao_deve_aceitar_tipo_telefone_com_numeros() {
+        telefone.setTipoTelefone("celular4");
+        assertTrue(hasErrors(telefone, "Tipo telefone não pode conter numeros"));
+    }
+
+    @Test
+    public void nao_deve_aceitar_tipo_telefone_tamanho_maximo() {
+        telefone.setTipoTelefone("ffffffffffffffffffffffffffffffffffffff");
+        assertTrue(hasErrors(telefone, "O campo tipo de telefone está com tamanho incorreto"));
+    }
+
+    @Test
+    public void nao_deve_aceitar_tipo_telefone_tamanho_minimo() {
+        telefone.setTipoTelefone("fff");
+        assertTrue(hasErrors(telefone, "O campo tipo de telefone está com tamanho incorreto"));
+    }
+
+    @Test
+    public void nao_deve_aceitar_tipo_telefone_nulo() {
+        telefone.setTipoTelefone(null);
+        assertTrue(hasErrors(telefone, "É necessário preencher o campo tipo de telefone"));
+    }
 
 }

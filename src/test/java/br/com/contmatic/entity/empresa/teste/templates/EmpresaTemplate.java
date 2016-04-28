@@ -9,48 +9,67 @@ import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
 
+public class EmpresaTemplate implements TemplateLoader {
 
-public class EmpresaTemplate implements TemplateLoader{
- 
-    /* (non-Javadoc)
-     * @see br.com.six2six.fixturefactory.loader.TemplateLoader#load()
+    /**
+     * Metodo para carregar os templates
      */
+
     public void load() {
-   
-        Fixture.of(Empresa.class).addTemplate("valido", new Rule(){{
-            add("cnpj",random("12345678910124","55555555555555","33333333333333"));
-            add("email",random("${cnpj}.gmail.com","${cnpj}.hotmail.com"));
-            add("nomeFantasia",random("empresa 1","empresa 2","empresa 3"));
-            add("nomeProprietario",random("Erick","Maia","Silva"));
-            add("dataCriacao",new DateTime(2016,04,25,0,0,0));
-            add("dataAlteracao",new DateTime(2016,04,25,0,0,0).plusDays(2));
-            add("telefones", has(2).of(Telefone.class,"valido"));
-            add("endereco",has(2).of(Endereco.class,"valido"));
-        }});
-        Fixture.of(Empresa.class).addTemplate("invalido", new Rule(){{
-            add("cnpj",random("11","5gdf5","333333333f3333"));
-            add("email",random("1",""));
-            add("nomeFantasia",random("ff",""));
-            add("nomeProprietario",random("Erick","Maia","Silva"));
-            add("endereco",has(1).of(Endereco.class,"invalido"));
-            add("telefones",has(1).of(Telefone.class,"invalido"));
-            add("dataAlteracao",new DateTime(2016,04,25,0,0,0).minusDays(2));
-        }});
-        Fixture.of(Empresa.class).addTemplate("telefone_igual", new Rule(){{
-            add("cnpj",random("11","5gdf5","333333333f3333"));
-            add("email",random("1",""));
-            add("nomeFantasia",random("ff",""));
-            add("nomeProprietario",random("Erick","Maia","Silva"));        
-            add("telefones", has(2).of(Telefone.class,"iguais"));
-        }});
-        Fixture.of(Empresa.class).addTemplate("endereco_igual", new Rule(){{
-            add("cnpj",random("11","5gdf5","333333333f3333"));
-            add("email",random("1",""));
-            add("nomeFantasia",random("ff",""));
-            add("nomeProprietario",random("Erick","Maia","Silva"));        
-            add("endereco", has(2).of(Endereco.class,"iguais"));
-        }});
-        
+        /**
+         * Cria um objeto valido de Empresa
+         */
+        Fixture.of(Empresa.class).addTemplate("valido", new Rule() {
+            {
+                add("cnpj", random("12345678910124", "55555555555555", "33333333333333"));
+                add("email", random("${cnpj}.gmail.com", "${cnpj}.hotmail.com"));
+                add("nomeFantasia", random("empresa 1", "empresa 2", "empresa 3"));
+                add("nomeProprietario", random("Erick", "Maia", "Silva"));
+                add("dataCriacao", new DateTime(2016, 04, 25, 0, 0, 0));
+                add("dataAlteracao", new DateTime(2016, 04, 25, 0, 0, 0).plusDays(2));
+                add("telefone", has(2).of(Telefone.class, "valido"));
+                add("endereco", has(2).of(Endereco.class, "valido"));
+            }
+        });
+        /**
+         * Cria um objeto invalido de Empresa
+         */
+        Fixture.of(Empresa.class).addTemplate("invalido", new Rule() {
+            {
+                add("cnpj", random("11", "5gdf5", "333333333f3333"));
+                add("email", random("1", ""));
+                add("nomeFantasia", random("ff", ""));
+                add("nomeProprietario", random("Erick", "Maia", "Silva"));
+                add("endereco", has(1).of(Endereco.class, "invalido"));
+                add("telefone", has(1).of(Telefone.class, "invalido"));
+                add("dataAlteracao", new DateTime(2016, 04, 25, 0, 0, 0).minusDays(2));
+            }
+        });
+        /**
+         * Cria um objeto de Empresa com telefone igual
+         */
+        Fixture.of(Empresa.class).addTemplate("telefone_igual", new Rule() {
+            {
+                add("cnpj", random("11", "5gdf5", "333333333f3333"));
+                add("email", random("1", ""));
+                add("nomeFantasia", random("ff", ""));
+                add("nomeProprietario", random("Erick", "Maia", "Silva"));
+                add("telefone", has(2).of(Telefone.class, "iguais"));
+            }
+        });
+        /**
+         * Cria um objeto de Empresa com endereço igual
+         */
+        Fixture.of(Empresa.class).addTemplate("endereco_igual", new Rule() {
+            {
+                add("cnpj", random("11", "5gdf5", "333333333f3333"));
+                add("email", random("1", ""));
+                add("nomeFantasia", random("ff", ""));
+                add("nomeProprietario", random("Erick", "Maia", "Silva"));
+                add("endereco", has(2).of(Endereco.class, "iguais"));
+            }
+        });
+
     }
 
 }

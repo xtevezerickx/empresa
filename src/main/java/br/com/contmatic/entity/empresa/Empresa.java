@@ -5,8 +5,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 import java.util.Set;
 
 import javax.validation.constraints.Future;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
@@ -54,16 +52,15 @@ public class Empresa {
     @NotNull(message = "É necessário preencher o nome fantasia")
     @NotBlank(message = "Nome Fantasia não pode estar vazio")
     @Length(min = TAMANHO_MIN_NOME_FANTASIA, max = TAMANHO_MAX_NOME_FANTASIA, message = "Nome Fantasia tamanho incorreto")
-    @Pattern(regexp = ".{8,30}")
+    @Pattern(regexp = "[a-z\\-0-9]{8,30}")
     private String nomeFantasia;
 
     /** Recebe o nome do proprietario. */
 
     @NotNull(message = "É necessário preencher o nome do proprietário")
     @NotBlank(message = "Nome do proprietário não pode estar vazio")
-    @Max(value = TAMANHO_MAX_NOME_PROPRIETARIO, message = "campo nome proprietário contem mais que 30 caracteres")
-    @Min(value = TAMANHO_MIN_NOME_PROPRIETARIO, message = "campo nome proprietário contem menos que 8 caracteres")
-    @Pattern(regexp = "\\D{8,30}", message = "Nome proprietário não deve conter números")
+    @Length(max = TAMANHO_MAX_NOME_PROPRIETARIO, min = TAMANHO_MIN_NOME_PROPRIETARIO, message = "Campo nome proprietário está com tamanho incorreto")
+    @Pattern(regexp = "\\w{8,30}", message = "Nome proprietário não deve conter números")
     private String nomeProprietario;
 
     /** Recebe o cnpj da empresa. */
@@ -85,7 +82,7 @@ public class Empresa {
     /** Recebe os numeros de telefone da empresa. */
 
     @NotEmpty(message = "Telefone não pode ser vazio")
-    private Set<Telefone> telefones;
+    private Set<Telefone> telefone;
 
     /** Recebe os enderecos da empresa. */
 
@@ -151,7 +148,8 @@ public class Empresa {
     public void setTelefone(Telefone telefone) {
         this.validateTelefoneIgual(telefone);
         this.validateEmpresaPrecisaDeDoisTelefones();
-        this.telefones.add(telefone);
+        this.telefone.add(telefone);
+
     }
 
     /**
@@ -160,7 +158,7 @@ public class Empresa {
      * @return telefone
      */
     public Set<Telefone> getTelefone() {
-        return telefones;
+        return telefone;
     }
 
     /**
@@ -281,7 +279,7 @@ public class Empresa {
      * @throws IllegalArgumentException caso a empresa já tenha o mesmo telefone cadastrado
      */
     private void validateTelefoneIgual(Telefone telefone) {
-        checkArgument(!(this.telefones.contains(telefone)), "Empresa não pode ter dois telefones iguais cadastrados");
+        checkArgument(!(this.telefone.contains(telefone)), "Empresa não pode ter dois telefones iguais cadastrados");
     }
 
     /**
@@ -300,7 +298,7 @@ public class Empresa {
      */
 
     private void validateEmpresaPrecisaDeDoisTelefones() {
-        checkArgument(!(telefones.size() != 2), "A empresa precisa de pelo menos dois telefones");
+        checkArgument(!(telefone.size() != 2), "A empresa precisa de pelo menos dois telefones");
     }
 
     /**
@@ -347,7 +345,7 @@ public class Empresa {
         return new ToStringBuilder(this, StandardToStringStyle.MULTI_LINE_STYLE).append(this.nomeFantasia != null ? "Nome Fantasia: " + this.nomeFantasia : null)
                 .append(this.nomeProprietario != null ? "Nome do Propietário: " + this.nomeProprietario : null).append(this.cnpj != null ? "CNPJ: " + this.cnpj : null)
                 .append(this.email != null ? "Email: " + this.email : null).append(this.dataCriacao != null ? "Data de criação: " + dataCriacaoString : null)
-                .append(this.dataAlteracao != null ? "Data da alteração: " + dataAlteracaoString : null).append(telefones).append(endereco).build();
+                .append(this.dataAlteracao != null ? "Data da alteração: " + dataAlteracaoString : null).append(telefone).append(endereco).build();
 
     }
 
