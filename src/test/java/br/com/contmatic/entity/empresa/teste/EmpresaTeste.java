@@ -47,6 +47,9 @@ public class EmpresaTeste {
     @After
     public void tearDown() {
         empresa = null;
+        empresaInvalida = null;
+        empresaTelefoneIgual = null;
+        empresaEnderecoIgual = null;
     }
 
     @AfterClass

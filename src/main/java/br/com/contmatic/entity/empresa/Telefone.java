@@ -39,7 +39,7 @@ public class Telefone {
     @Pattern(regexp = "\\d{3}", message = "DDD não pode conter letras")
     private String ddd;
 
-    /** Recebe o tipo de telefone, exemplo: Comercial, celular, casa, etc */
+    /** Recebe o tipo de telefone,etc */
 
     @NotNull(message = "É necessário preencher o campo tipo de telefone")
     @NotBlank(message = "Tipo de telefone não pode ser vazio")

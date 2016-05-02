@@ -74,11 +74,6 @@ public class TelefoneTeste {
     }
 
     @Test
-    public void to_string() {
-        System.out.println(telefone);
-    }
-
-    @Test
     public void nao_deve_aceitar_numero_telefone_nulo() {
         telefone.setNumeroTelefone(null);
         assertTrue(hasErrors(telefone, "É necessário preencher o campo numero de telefone"));

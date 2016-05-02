@@ -18,7 +18,7 @@ public class EnderecoTemplate implements TemplateLoader {
         Fixture.of(Endereco.class).addTemplate("valido", new Rule() {
             {
                 add("bairro", random("bairro um", "bairro dois", "bairro tres"));
-                add("cep", random("01154874", "03378050", "03315487"));
+                add("cep", random("01154874", "03378050", "03315487", "03378011", "06659874", "08847511"));
                 add("cidade", random("Sao paulo", "Acre", "Rio de janeiro"));
                 add("estado", random("Minas Gerais", "Sao paulo", "Rio"));
                 add("nomeLogradouro", random("rua x", "rua y", "rua z"));

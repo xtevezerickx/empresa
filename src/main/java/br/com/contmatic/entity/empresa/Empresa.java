@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.Set;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -17,7 +18,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -81,12 +81,12 @@ public class Empresa {
 
     /** Recebe os numeros de telefone da empresa. */
 
-    @NotEmpty(message = "Telefone não pode ser vazio")
+    @Valid
     private Set<Telefone> telefone;
 
     /** Recebe os enderecos da empresa. */
 
-    @NotEmpty(message = "Endereço não pode ser vazio")
+    @Valid
     private Set<Endereco> endereco;
 
     /** Recebe a data de criação da empresa. */
@@ -336,7 +336,6 @@ public class Empresa {
      */
     @Override
     public String toString() {
-
         DateTimeFormatter dataFormatada = DateTimeFormat.forPattern("dd/MM/YYYY");
         dataCriacao = new DateTime();
         String dataCriacaoString = dataFormatada.print(dataCriacao);
@@ -345,7 +344,7 @@ public class Empresa {
         return new ToStringBuilder(this, StandardToStringStyle.MULTI_LINE_STYLE).append(this.nomeFantasia != null ? "Nome Fantasia: " + this.nomeFantasia : null)
                 .append(this.nomeProprietario != null ? "Nome do Propietário: " + this.nomeProprietario : null).append(this.cnpj != null ? "CNPJ: " + this.cnpj : null)
                 .append(this.email != null ? "Email: " + this.email : null).append(this.dataCriacao != null ? "Data de criação: " + dataCriacaoString : null)
-                .append(this.dataAlteracao != null ? "Data da alteração: " + dataAlteracaoString : null).append(telefone).append(endereco).build();
+                .append(this.dataAlteracao != null ? "Data da alteração: " + dataAlteracaoString : null).append(telefone.toString()).append(endereco.toString()).build();
 
     }
 
