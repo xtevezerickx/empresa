@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import br.com.contmatic.entity.empresa.Endereco;
+import br.com.contmatic.entity.empresa.constantes.EnderecoType;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 
@@ -56,7 +57,7 @@ public class EnderecoTeste {
 
     @Test(timeout = 1000)
     public void deve_aceitar_tipo_logradouro_valido() {
-        String tipoLogradouro = "avenida";
+        EnderecoType tipoLogradouro = EnderecoType.ALAMEDA;
         endereco.setTipoLogradouro(tipoLogradouro);
         assertEquals(tipoLogradouro, endereco.getTipoLogradouro());
     }
@@ -127,25 +128,6 @@ public class EnderecoTeste {
     public void nao_deve_aceitar_tipo_logradouro_nulo() {
         endereco.setTipoLogradouro(null);
         assertTrue(hasErrors(endereco, "É necessário preencher o campo tipo logradouro"));
-    }
-
-    @Test
-    public void nao_deve_aceitar_tipo_logradouro_vazio() {
-        endereco.setTipoLogradouro("");
-        assertTrue(hasErrors(endereco, "Tipo do logradouro não pode ser vazio"));
-    }
-
-    @Test
-    public void nao_deve_aceitar_tipo_logradouro_tamanho_maximo() {
-        endereco.setTipoLogradouro("lklklllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
-        assertTrue(hasErrors(endereco, "O tipo de logradouro está com o tamanho incorreto"));
-
-    }
-
-    @Test
-    public void nao_deve_aceitar_tipo_logradouro_tamanho_minimo() {
-        endereco.setTipoLogradouro("f");
-        assertTrue(hasErrors(endereco, "O tipo de logradouro está com o tamanho incorreto"));
     }
 
     @Test

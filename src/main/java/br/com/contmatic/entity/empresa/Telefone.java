@@ -1,27 +1,20 @@
 package br.com.contmatic.entity.empresa;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.StandardToStringStyle;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
+import br.com.contmatic.entity.empresa.constantes.TelefoneType;
+
 public class Telefone {
-    /** Constante para tamanho maximo tipo telefone */
-    private static final int TAMANHO_MAX_TIPO_TELEFONE = 15;
-
-    /** Constante para tamanho DDD */
-    private static final int TAMANHO_DDD = 3;
-
-    /** Constante para tamanho minimo tipo telefone */
-    private static final int TAMANHO_MIN_TIPO_TELEFONE = 4;
 
     /** Recebe o numero de telefone */
 
@@ -34,18 +27,14 @@ public class Telefone {
     /** Recebe o numero de DDD. */
 
     @NotNull(message = "É necessário preencher o campo DDD")
-    @Length(max = TAMANHO_DDD, message = "DDD com tamanho incorreto")
-    @NotEmpty(message = "Campo DDD não pode ser vazio")
-    @Pattern(regexp = "\\d{3}", message = "DDD não pode conter letras")
-    private String ddd;
+    @Max(value = 99L, message = "DDD com tamanho incorreto")
+    @Min(value = 11L, message = "DDD com tamanho incorreto")
+    private Integer ddd;
 
     /** Recebe o tipo de telefone,etc */
 
     @NotNull(message = "É necessário preencher o campo tipo de telefone")
-    @NotBlank(message = "Tipo de telefone não pode ser vazio")
-    @Size(min = TAMANHO_MIN_TIPO_TELEFONE, max = TAMANHO_MAX_TIPO_TELEFONE, message = "O campo tipo de telefone está com tamanho incorreto")
-    @Pattern(regexp = "\\D{4,15}", message = "Tipo telefone não pode conter numeros")
-    private String tipoTelefone;
+    private TelefoneType tipoTelefone;
 
     /**
      * Retorna o numero de telefone do objeto
@@ -70,7 +59,7 @@ public class Telefone {
      * 
      * @return String ddd
      */
-    public String getDdd() {
+    public Integer getDdd() {
         return ddd;
     }
 
@@ -79,7 +68,7 @@ public class Telefone {
      * 
      * @param ddd
      */
-    public void setDdd(String ddd) {
+    public void setDdd(Integer ddd) {
         this.ddd = ddd;
     }
 
@@ -88,7 +77,7 @@ public class Telefone {
      * 
      * @return String
      */
-    public String getTipoTelefone() {
+    public TelefoneType getTipoTelefone() {
         return tipoTelefone;
     }
 
@@ -98,7 +87,7 @@ public class Telefone {
      * @param tipoTelefone
      */
 
-    public void setTipoTelefone(String tipoTelefone) {
+    public void setTipoTelefone(TelefoneType tipoTelefone) {
         this.tipoTelefone = tipoTelefone;
     }
 

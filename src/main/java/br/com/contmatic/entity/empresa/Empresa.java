@@ -145,10 +145,9 @@ public class Empresa {
      * @throws IllegalArgumentException caso o Telefone já exista na empresa ou tenha menos que 2 telefones
      * 
      */
-    public void setTelefone(Telefone telefone) {
-        this.validateTelefoneIgual(telefone);
-        this.validateEmpresaPrecisaDeDoisTelefones();
-        this.telefone.add(telefone);
+    public void setTelefone(Set<Telefone> telefone) {
+        this.validateEmpresaPrecisaDeDoisTelefones(telefone);
+        this.telefone = telefone;
 
     }
 
@@ -177,10 +176,9 @@ public class Empresa {
      * @throws IllegalArgumentException caso o Endereco já exista na empresa ou tenha menos que 2 enderecos
      */
 
-    public void setEndereco(Endereco endereco) {
-        this.validateEnderecoIgual(endereco);
-        this.validateEmpresaPrecisaDeDoisEnderecos();
-        this.endereco.add(endereco);
+    public void setEndereco(Set<Endereco> endereco) {
+        this.validateEmpresaPrecisaDeDoisEnderecos(endereco);
+        this.endereco = endereco;
     }
 
     /**
@@ -268,27 +266,8 @@ public class Empresa {
      * @throws IllegalArgumentException caso a empersa possuia menos que 2 endereços
      */
 
-    private void validateEmpresaPrecisaDeDoisEnderecos() {
+    private void validateEmpresaPrecisaDeDoisEnderecos(Set<Endereco> endereco) {
         checkArgument(!(endereco.size() != 2), "A empresa precisa de pelo menos dois enderecos");
-    }
-
-    /**
-     * Valida se a empresa tem o mesmo telefone cadastrado
-     *
-     * @param telefone
-     * @throws IllegalArgumentException caso a empresa já tenha o mesmo telefone cadastrado
-     */
-    private void validateTelefoneIgual(Telefone telefone) {
-        checkArgument(!(this.telefone.contains(telefone)), "Empresa não pode ter dois telefones iguais cadastrados");
-    }
-
-    /**
-     * Validata se a empresa tem o mesmo endereco cadastrado
-     *
-     * @param endereco the endereco
-     */
-    private void validateEnderecoIgual(Endereco endereco) {
-        checkArgument(!(this.endereco.contains(endereco)), "Empresa não pode ter dois endereços iguais cadastrados");
     }
 
     /**
@@ -297,7 +276,7 @@ public class Empresa {
      * @throws IllegalArgumentException
      */
 
-    private void validateEmpresaPrecisaDeDoisTelefones() {
+    private void validateEmpresaPrecisaDeDoisTelefones(Set<Telefone> telefone) {
         checkArgument(!(telefone.size() != 2), "A empresa precisa de pelo menos dois telefones");
     }
 
@@ -337,9 +316,7 @@ public class Empresa {
     @Override
     public String toString() {
         DateTimeFormatter dataFormatada = DateTimeFormat.forPattern("dd/MM/YYYY");
-        dataCriacao = new DateTime();
         String dataCriacaoString = dataFormatada.print(dataCriacao);
-        dataAlteracao = new DateTime();
         String dataAlteracaoString = dataFormatada.print(dataAlteracao);
         return new ToStringBuilder(this, StandardToStringStyle.MULTI_LINE_STYLE).append(this.nomeFantasia != null ? "Nome Fantasia: " + this.nomeFantasia : null)
                 .append(this.nomeProprietario != null ? "Nome do Propietário: " + this.nomeProprietario : null).append(this.cnpj != null ? "CNPJ: " + this.cnpj : null)

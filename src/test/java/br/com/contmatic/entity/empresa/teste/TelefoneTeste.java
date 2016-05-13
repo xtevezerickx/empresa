@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import br.com.contmatic.entity.empresa.Telefone;
+import br.com.contmatic.entity.empresa.constantes.TelefoneType;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 
@@ -61,14 +62,14 @@ public class TelefoneTeste {
 
     @Test(timeout = 1000)
     public void deve_aceitar_ddd_valido() {
-        String ddd = "011";
+        Integer ddd = 11;
         telefone.setDdd(ddd);
         assertEquals(ddd, telefone.getDdd());
     }
 
     @Test(timeout = 1000)
     public void deve_aceitar_tipo_telefone_valido() {
-        String tipoTelefone = "comercial";
+        TelefoneType tipoTelefone = TelefoneType.FIXO;
         telefone.setTipoTelefone(tipoTelefone);
         assertEquals(tipoTelefone, telefone.getTipoTelefone());
     }
@@ -105,45 +106,15 @@ public class TelefoneTeste {
 
     @Test
     public void nao_deve_aceitar_ddd_vazio() {
-        telefone.setDdd("");
-        assertTrue(hasErrors(telefone, "Campo DDD não pode ser vazio"));
+        telefone.setDdd(0);
+        assertTrue(hasErrors(telefone, "DDD com tamanho incorreto"));
     }
 
     @Test
     public void nao_deve_aceitar_ddd_com_tamanho_errado() {
-        telefone.setDdd("44444");
+        telefone.setDdd(4444);
         assertTrue(hasErrors(telefone, "DDD com tamanho incorreto"));
 
-    }
-
-    @Test
-    public void nao_deve_aceitar_ddd_com_letras() {
-        telefone.setDdd("01d");
-        assertTrue(hasErrors(telefone, "DDD não pode conter letras"));
-    }
-
-    @Test
-    public void nao_deve_aceitar_tipo_telefone_vazio() {
-        telefone.setTipoTelefone("");
-        assertTrue(hasErrors(telefone, "Tipo de telefone não pode ser vazio"));
-    }
-
-    @Test
-    public void nao_deve_aceitar_tipo_telefone_com_numeros() {
-        telefone.setTipoTelefone("celular4");
-        assertTrue(hasErrors(telefone, "Tipo telefone não pode conter numeros"));
-    }
-
-    @Test
-    public void nao_deve_aceitar_tipo_telefone_tamanho_maximo() {
-        telefone.setTipoTelefone("ffffffffffffffffffffffffffffffffffffff");
-        assertTrue(hasErrors(telefone, "O campo tipo de telefone está com tamanho incorreto"));
-    }
-
-    @Test
-    public void nao_deve_aceitar_tipo_telefone_tamanho_minimo() {
-        telefone.setTipoTelefone("fff");
-        assertTrue(hasErrors(telefone, "O campo tipo de telefone está com tamanho incorreto"));
     }
 
     @Test

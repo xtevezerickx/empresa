@@ -1,6 +1,7 @@
 package br.com.contmatic.entity.empresa.teste.templates;
 
 import br.com.contmatic.entity.empresa.Telefone;
+import br.com.contmatic.entity.empresa.constantes.TelefoneType;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
@@ -15,9 +16,17 @@ public class TelefoneTemplate implements TemplateLoader {
          */
         Fixture.of(Telefone.class).addTemplate("valido", new Rule() {
             {
-                add("ddd", random("011", "015", "056", "018"));
-                add("numeroTelefone", random("123456789", "987654321", "654789123"));
-                add("tipoTelefone", random("celular", "comercial", "filial"));
+                add("ddd", random(Integer.class, range(11L, 99L)));
+                add("numeroTelefone", regex("[3-5]{1}\\d{7}"));
+                add("tipoTelefone", random(TelefoneType.FIXO));
+            }
+        });
+
+        Fixture.of(Telefone.class).addTemplate("celular", new Rule() {
+            {
+                add("ddd", random(Integer.class, range(11L, 99L)));
+                add("numeroTelefone", regex("[9]{1}[4-9]{1}\\d{7}"));
+                add("tipoTelefone", random(TelefoneType.CELULAR));
             }
         });
         /**
@@ -25,9 +34,9 @@ public class TelefoneTemplate implements TemplateLoader {
          */
         Fixture.of(Telefone.class).addTemplate("invalido", new Rule() {
             {
-                add("ddd", random("01", "05", "06", "08"));
+                add("ddd", random(Integer.class, range(11L, 99L)));
                 add("numeroTelefone", random("123456", "987654324441", "654789l23"));
-                add("tipoTelefone", random("oo", "c54778", ""));
+                add("tipoTelefone", random(TelefoneType.CELULAR));
             }
         });
         /**

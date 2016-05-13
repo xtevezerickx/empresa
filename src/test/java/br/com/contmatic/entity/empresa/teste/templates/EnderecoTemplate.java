@@ -1,6 +1,7 @@
 package br.com.contmatic.entity.empresa.teste.templates;
 
 import br.com.contmatic.entity.empresa.Endereco;
+import br.com.contmatic.entity.empresa.constantes.EnderecoType;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
@@ -23,7 +24,7 @@ public class EnderecoTemplate implements TemplateLoader {
                 add("estado", random("Minas Gerais", "Sao paulo", "Rio"));
                 add("nomeLogradouro", random("rua x", "rua y", "rua z"));
                 add("numero", random("1", "2", "3"));
-                add("tipoLogradouro", random("rua", "av", "cond"));
+                add("tipoLogradouro", random(EnderecoType.class));
             }
         });
         /**
@@ -37,7 +38,7 @@ public class EnderecoTemplate implements TemplateLoader {
                 add("estado", random("Minas Gerais", "Sao paulo", "Rio"));
                 add("nomeLogradouro", random("rua x", "rua y", "rua z"));
                 add("numero", random("1", "2", "3"));
-                add("tipoLogradouro", random("rua", "av", "cond"));
+                add("tipoLogradouro", random(EnderecoType.class));
             }
         });
         /**
@@ -51,7 +52,6 @@ public class EnderecoTemplate implements TemplateLoader {
                 add("estado", "Minas Gerais");
                 add("nomeLogradouro", "rua x");
                 add("numero", "1");
-                add("tipoLogradouro", "cond");
             }
         });
     }

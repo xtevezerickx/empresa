@@ -13,6 +13,8 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
+import br.com.contmatic.entity.empresa.constantes.EnderecoType;
+
 public class Endereco {
     /**
      * Constante para tamanho maximo nome do logradouro
@@ -22,14 +24,7 @@ public class Endereco {
      * Constante para tamanho minimo nome do logradouro
      */
     private static final int TAMANHO_MIN_NOME_LOGRADOURO = 4;
-    /**
-     * Constante para tamanho maximo tipo do logradouro
-     */
-    private static final int TAMANHO_MAX_TIPO_LOGRADOURO = 15;
-    /**
-     * Constante para tamanho minimo para tipo de logradouro
-     */
-    private static final int TAMANHO_MIN_TIPO_LOGRADOURO = 2;
+
     /**
      * Constante para tamanho do cep
      */
@@ -68,15 +63,13 @@ public class Endereco {
     @Length(min = TAMANHO_MIN_NOME_LOGRADOURO, max = TAMANHO_MAX_NOME_LOGRADOURO, message = "campo nome logradouro está com tamanho incorreto")
     @Pattern(regexp = "[a-zA-Z_0-9]{4,30}")
     private String nomeLogradouro;
+
     /**
      * Recebe o tipo de logradouro
      */
     @NotNull(message = "É necessário preencher o campo tipo logradouro")
-    @NotBlank(message = "Tipo do logradouro não pode ser vazio")
-    @Size(max = TAMANHO_MAX_TIPO_LOGRADOURO, min = TAMANHO_MIN_TIPO_LOGRADOURO, message = "O tipo de logradouro está com o tamanho incorreto")
-    @Pattern(regexp = "\\w{2,15}")
+    private EnderecoType tipoLogradouro;
 
-    private String tipoLogradouro;
     /**
      * Recebe o numero
      */
@@ -145,7 +138,7 @@ public class Endereco {
      * 
      * @return String tipoLogradouro
      */
-    public String getTipoLogradouro() {
+    public EnderecoType getTipoLogradouro() {
         return tipoLogradouro;
     }
 
@@ -154,7 +147,7 @@ public class Endereco {
      * 
      * @param tipoLogradouro
      */
-    public void setTipoLogradouro(String tipoLogradouro) {
+    public void setTipoLogradouro(EnderecoType tipoLogradouro) {
         this.tipoLogradouro = tipoLogradouro;
     }
 

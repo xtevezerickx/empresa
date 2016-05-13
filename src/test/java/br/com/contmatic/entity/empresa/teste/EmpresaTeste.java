@@ -20,8 +20,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import br.com.contmatic.entity.empresa.Empresa;
-import br.com.contmatic.entity.empresa.Endereco;
-import br.com.contmatic.entity.empresa.Telefone;
 import br.com.contmatic.entity.empresa.util.ValidationUtil;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
@@ -32,8 +30,6 @@ public class EmpresaTeste {
 
     private Empresa empresa;
     private Empresa empresaInvalida;
-    private Empresa empresaTelefoneIgual;
-    private Empresa empresaEnderecoIgual;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -41,6 +37,7 @@ public class EmpresaTeste {
     @BeforeClass
     public static void setUpBeforeClass() {
         System.out.println("Metodos sendo utilizados antes de iniciar a classe Empresa Teste");
+        FixtureFactoryLoader.loadTemplates("br.com.contmatic.entity.empresa.teste.templates");
 
     }
 
@@ -48,8 +45,7 @@ public class EmpresaTeste {
     public void tearDown() {
         empresa = null;
         empresaInvalida = null;
-        empresaTelefoneIgual = null;
-        empresaEnderecoIgual = null;
+
     }
 
     @AfterClass
@@ -59,27 +55,8 @@ public class EmpresaTeste {
 
     @Before
     public void setUp() {
-
-        FixtureFactoryLoader.loadTemplates("br.com.contmatic.entity.empresa.teste.templates");
         empresa = Fixture.from(Empresa.class).gimme("valido");
         empresaInvalida = Fixture.from(Empresa.class).gimme("invalido");
-        empresaTelefoneIgual = Fixture.from(Empresa.class).gimme("telefone_igual");
-        empresaEnderecoIgual = Fixture.from(Empresa.class).gimme("endereco_igual");
-
-    }
-
-    @Test
-    public void nao_deve_aceitar_telefones_iguais() {
-        thrown.expect(IllegalArgumentException.class);
-        Telefone telefone = Fixture.from(Telefone.class).gimme("iguais");
-        empresaTelefoneIgual.setTelefone(telefone);
-    }
-
-    @Test
-    public void nao_deve_aceitar_enderecos_iguais() {
-        thrown.expect(IllegalArgumentException.class);
-        Endereco endereco = Fixture.from(Endereco.class).gimme("iguais");
-        empresaEnderecoIgual.setEndereco(endereco);
 
     }
 
